@@ -1,0 +1,41 @@
+<!-- <section>
+    <div class="form-body">
+      <h2 class="text-center " >Create an account</h2>
+
+            <form [formGroup]="form">
+
+              <mat-form-field appearance="outline" class="mb-4" floatLabel="always">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" placeholder="Enter email" formControlName="Email"/>
+                <mat-icon matSuffix>email</mat-icon>
+                @if ((form.get('Email')?.hasError('required') || form.get('Email')?.hasError('email'))) {
+                  <mat-error>{{ getErrorMessage('Email') }}</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="mb-4" floatLabel="always">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" placeholder="Enter password" formControlName="Password"/>
+                <mat-icon matSuffix>lock</mat-icon>
+                @if ((form.get('Password')?.hasError('required') || form.get('Password')?.hasError('minlength'))) {
+                  <mat-error>{{ getErrorMessage('Password') }}</mat-error>
+                }
+              </mat-form-field>
+
+
+
+              <div class="form-actions">
+                <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Login</button>
+              </div>
+
+              <p class="text-center text-muted mt-5 mb-0">
+                Don't have an account?
+                <a href="#!" class="fw-bold text-body">
+                  <u>Register here</u>
+                </a>
+              </p>
+
+            </form>
+          </div>
+
+</section> -->

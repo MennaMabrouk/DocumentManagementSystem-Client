@@ -1,0 +1,28 @@
+.footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 0.5em 3em; 
+  height: 45px;       
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  
+    //to be at the bottom of the screen
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+
+}
+
+.footer .container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer p {
+  margin-top: 5px; 
+  font-size: 14px; 
+}

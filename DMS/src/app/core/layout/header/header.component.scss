@@ -1,0 +1,20 @@
+.header {
+  display: flex;
+  justify-content: flex-start; //to the left
+  align-items: center;
+  padding: 1em 3em;
+  background-color: #333;
+  color: white;
+  width: 100%;
+  box-sizing: border-box;
+  height: 70px;
+}
+
+
+.logo img {
+  height: 60px;
+  width: auto;
+  margin-right: 20px; 
+}
+
+

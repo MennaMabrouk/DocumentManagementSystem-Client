@@ -1,0 +1,11 @@
+{
+    "validation": {
+      "requiredMessage": "This field is required.",
+      "invalidEmail": "Invalid email address.",
+      "passwordMinLength": "The password must consist of at least 8 characters.",
+      "mustMatch": "The password must match.",
+      "nidPattern": "National ID must be exactly 14 digits.",
+      "phonePattern": "Phone number must be 11 digits."
+    }
+  }
+  

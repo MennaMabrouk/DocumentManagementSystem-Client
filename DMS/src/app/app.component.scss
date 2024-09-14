@@ -1,0 +1,21 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures the page takes full height */
+  }
+  
+//   router-outlet {
+//     flex-grow: 1; /* Expands to fill available space */
+//     margin-top: 70px; /* Accounts for the header height */
+//     margin-bottom: 45px; /* Accounts for the footer height */
+//     overflow-y: auto; /* Ensures scrolling if content overflows */
+//     box-sizing: border-box;
+//   }
+  
+app-register {
+    flex-grow: 1; /* Expands to fill available space */
+    margin-top: 70px; /* Accounts for the header height */
+    margin-bottom: 45px; /* Accounts for the footer height */
+    overflow-y: auto; /* Ensures scrolling if content overflows */
+    box-sizing: border-box;
+  }
