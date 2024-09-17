@@ -1,4 +1,4 @@
-export interface RegisterUserDto {
+export interface RegisterUserModel {
     username: string;
     password: string;
     confirmPassword: string;

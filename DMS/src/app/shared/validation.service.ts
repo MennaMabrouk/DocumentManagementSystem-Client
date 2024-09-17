@@ -41,6 +41,10 @@ export class ValidationService {
         {
           return this.validationMessages.phonePattern;
         }
+        else if (controlName === 'Gender')
+        {
+          return this.validationMessages.genderMaxLength;
+        }
       }
       
     }

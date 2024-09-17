@@ -1,9 +1,9 @@
-<!-- <section>
+<section>
     <div class="form-body">
-      <h2 class="text-center " >Create an account</h2>
+      <h2 class="text-center " >Login</h2>
 
-            <form [formGroup]="form">
-
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="form-row">
               <mat-form-field appearance="outline" class="mb-4" floatLabel="always">
                 <mat-label>Email</mat-label>
                 <input matInput type="email" placeholder="Enter email" formControlName="Email"/>
@@ -21,7 +21,7 @@
                   <mat-error>{{ getErrorMessage('Password') }}</mat-error>
                 }
               </mat-form-field>
-
+            </div>
 
 
               <div class="form-actions">
@@ -30,7 +30,7 @@
 
               <p class="text-center text-muted mt-5 mb-0">
                 Don't have an account?
-                <a href="#!" class="fw-bold text-body">
+                <a  class="fw-bold text-body" [routerLink]="['/register']" routerLinkActive="mat-primary" >
                   <u>Register here</u>
                 </a>
               </p>
@@ -38,4 +38,4 @@
             </form>
           </div>
 
-</section> -->
+</section>

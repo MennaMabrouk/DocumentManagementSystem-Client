@@ -1,46 +1,48 @@
-.form-row {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
-}
+// .form-row {
+//   display: flex;
+//   flex-direction: column;
+//   margin-bottom: 16px;
+  
+// }
 
-.mat-form-field {
-  width: 100%;
-  margin-bottom: 16px;
-}
+// .mat-form-field {
+//   width: 100%;
+//   margin-bottom: 16px;
+// }
 
-.form-body {
-  max-width: 600px;
-  margin: 0 auto;
-}
+// .form-body {
+//   max-width: 600px;
+//   margin: 0 auto;
+// }
 
-.form-actions {
-  display: flex;
-  justify-content: center;
-}
+// .form-actions {
+//   display: flex;
+//   justify-content: center;
+// }
 
-.custom-radio-group-wrapper {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid rgba(0, 0, 0, 0.23);
-  padding: 8px 16px;
-  border-radius: 4px;
-  width: 100%; /* Keep full width for container */
-}
+// .custom-radio-group-wrapper {
+//   display: flex;
+//   flex-direction: column;
+//   border: 1px solid rgba(0, 0, 0, 0.23);
+//   padding: 8px 16px;
+//   border-radius: 4px;
+//   width: 100%; /* Keep full width for container */
+// }
 
-.gender-button-group {
-  display: flex;
-  justify-content: center;
-}
+// .gender-button-group {
+//   display: flex;
+//   justify-content: center;
+// }
 
-.gender-button-group mat-button-toggle {
-  width: 100px; /* Set a fixed width for each toggle button */
-  flex: none; /* Prevent stretching */
-}
+// .gender-button-group mat-button-toggle {
+//   width: 100px; /* Set a fixed width for each toggle button */
+//   flex: none; /* Prevent stretching */
+// }
 
-h2 {
-  font-size: 24px;
-  margin-bottom: 24px;
-}
-
-
+// h2.text-center {
+//     font-family: 'Roboto', sans-serif;
+//     font-size: 24px;
+//     font-weight: 500;
+//     margin-bottom: 1.5rem;
+//     color: #333;
+// }

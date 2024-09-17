@@ -9,7 +9,7 @@ import { HandleErrorInterceptor } from './shared/interceptors/handle-error-inter
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-     provideRouter(routes),
+    provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(),
     {

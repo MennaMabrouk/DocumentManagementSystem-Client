@@ -2,11 +2,11 @@
       <div class="form-body">
         <h2 class="text-center " >Create an account</h2>
 
-              <form [formGroup]="form">
+              <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <div class="form-row">
                 <mat-form-field appearance="outline" class="mb-4" floatLabel="always">
                   <mat-label>Username</mat-label>
-                  <input matInput type="text" placeholder="Enter username" formControlName="UserName"/>
+                  <input matInput type="text" placeholder="Enter username" formControlName="Username"/>
                   <mat-icon matSuffix>person</mat-icon>
                   @if (form.get('userName')?.hasError('required')) {
                     <mat-error>{{ getErrorMessage('userName') }}</mat-error>
@@ -68,16 +68,19 @@
                   <mat-label>Phone Number</mat-label>
                   <input matInput type="tel" placeholder="Enter phone number" formControlName="PhoneNumber"/>
                   <mat-icon matSuffix>call</mat-icon>
-                  @if (form.get('PhoneNumber')?.hasError('pattern')) {
+                  @if (form.get('ConfirmPassword')?.hasError('required') || form.get('PhoneNumber')?.hasError('pattern') ) {
                     <mat-error>{{ getErrorMessage('PhoneNumber') }}</mat-error>
                   }
                 </mat-form-field>
- 
+
                 <div class="custom-radio-group-wrapper">
                   <label class="mat-form-field-label">Gender</label>
                   <mat-button-toggle-group formControlName="Gender" aria-label="Gender" class="gender-button-group">
                     <mat-button-toggle value="Male" >Male</mat-button-toggle>
                     <mat-button-toggle value="Female">Female</mat-button-toggle>
+                    @if (form.get('Gender')?.hasError('required')||form.get('Gender')?.hasError('maxLength')){
+                      <mat-error>{{ getErrorMessage('Gender') }}</mat-error>
+                    }
                   </mat-button-toggle-group>
                 </div>
               </div>
@@ -90,7 +93,7 @@
 
                 <p class="text-center text-muted mt-5 mb-0">
                   Already have an account?
-                  <a href="#!" class="fw-bold text-body">
+                  <a class="fw-bold text-body" [routerLink]="['/login']" routerLinkActive="mat-primary">
                     <u>Login here</u>
                   </a>
                 </p>

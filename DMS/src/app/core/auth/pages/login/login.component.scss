@@ -1,0 +1,47 @@
+section {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 3rem;
+}
+  
+.form-body {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* Wider form for horizontal layout */
+    width: 100%;
+}
+
+/* Center the title and style it to match other elements */
+h2.text-center {
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+
+/* Button centering */
+.form-actions {
+    display: flex;
+    justify-content: center;
+}
+
+/* Make the form fields horizontal */
+.form-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space between fields */
+}
+
+
+/* Ensure responsiveness */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column; /* Stack fields vertically on small screens */
+    }
+
+
+}
