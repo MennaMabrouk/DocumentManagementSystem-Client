@@ -1,0 +1,33 @@
+.unauthorized-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+
+  mat-card {
+    max-width: 250px;  
+    padding: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    mat-card-content {
+      .bold-text {
+        font-weight: bold; 
+        color: #333;
+      }
+    }
+
+    
+    .unauthorized-img {
+      width: 100%;
+      max-height: 250px;
+      object-fit: cover;
+    }
+
+    mat-card-actions {
+      display: flex;
+      justify-content: center; // Center the button
+
+
+    }
+  }
+}

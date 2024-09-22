@@ -1,15 +1,16 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { ValidationService } from '../../../../shared/validation.service';
+import { ValidationService } from '../../../../shared/services/validation.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { Router, RouterModule } from '@angular/router';
+import {RouterModule } from '@angular/router';
 import { RegisterService } from '../../services/register.service';
 import { RegisterUserModel } from '../../models/register-user.model';
+import { NavigationService } from '../../../../shared/services/navigation.service';
+import {MatRadioModule} from '@angular/material/radio';
 
 
 
@@ -17,7 +18,6 @@ import { RegisterUserModel } from '../../models/register-user.model';
   selector: 'app-register',
   standalone: true,
   imports: [
-    CommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
@@ -25,7 +25,8 @@ import { RegisterUserModel } from '../../models/register-user.model';
     MatButtonModule,
     ReactiveFormsModule,
     MatButtonToggleModule,
-    RouterModule
+    RouterModule,
+    MatRadioModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -40,7 +41,7 @@ export class RegisterComponent implements OnInit {
     private formBuilder : FormBuilder,
     private validationService : ValidationService,
     private registerService : RegisterService,
-    private router : Router) { }
+    private navigationService : NavigationService) { }
 
     ngOnInit(): void {
       this.initializeForm();
@@ -90,7 +91,7 @@ onSubmit(): void {
     this.registerService.registerUser(registerData).subscribe({
       next: (response) => {
         console.log('Registration response:', response);
-        this.router.navigate(['/login']);
+        this.navigationService.navigateTo('/login');
 
       },
       error: (error) => {

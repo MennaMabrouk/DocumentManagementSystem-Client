@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { SingeltonService } from '../../../shared/singelton.service';
+import { SingeltonService } from '../../../shared/services/singelton.service';
 import { RegisterUserModel } from '../models/register-user.model';
 import { map, Observable } from 'rxjs';
 

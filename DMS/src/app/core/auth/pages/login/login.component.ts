@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ValidationService } from '../../../../shared/validation.service';
+import { ValidationService } from '../../../../shared/services/validation.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterModule } from '@angular/router';
+import {RouterModule } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { LoginUserModel } from '../../models/login-user.model';
+import { NavigationService } from '../../../../shared/services/navigation.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,7 @@ export class LoginComponent {
     private formBuilder : FormBuilder,
     private validationService : ValidationService,
     private loginService : LoginService,
-    private router : Router) { }
+    private navigationService : NavigationService) { }
 
 
    // Initialize form 
@@ -61,11 +62,8 @@ onSubmit(): void {
     this.loginService.loginUser(loginData).subscribe({
       next: (response) => {
         console.log('Logged successfully:', response);
-        this.router.navigate(['/dashboard']);
+        this.navigationService.navigateTo('/dashboard');
       },
-      error: (error) => {
-        console.error('Login failed!', error);
-      }
     });
   }
 }
