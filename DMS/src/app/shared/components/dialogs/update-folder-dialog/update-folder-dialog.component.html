@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>
+    <mat-icon>folder</mat-icon> Update Folder
+  </h2>
+  
+  <form [formGroup]="folderForm" (ngSubmit)="onUpdate()">
+    <mat-form-field appearance="fill">
+      <mat-label>Folder Name</mat-label>
+      <input matInput formControlName="Name" placeholder="Enter folder name" />
+      <mat-icon matSuffix>create</mat-icon>
+    </mat-form-field>
+  
+    <mat-checkbox formControlName="IsPublic">
+      <mat-icon>visibility</mat-icon> Public
+    </mat-checkbox>
+  
+    <div mat-dialog-actions>
+      <button mat-button type="submit" [disabled]="folderForm.invalid">
+        <mat-icon>check</mat-icon> Update
+      </button>
+      <button mat-button type="button" (click)="onCancel()">
+        <mat-icon>close</mat-icon> Cancel </button>
+    </div>
+  </form>
+  

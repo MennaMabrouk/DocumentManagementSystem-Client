@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SingeltonService } from '../../shared/services/singelton.service';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { UserModel } from './user.model';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { UserModel } from './user.model';
 })
 export class UserService {
 
-  private userId : number | null = null;
+  private userIdSubject : BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
 
   constructor(private singleton : SingeltonService) { }
 
@@ -25,9 +25,9 @@ export class UserService {
 
 
   getUserId(): Observable<number | null> {
-    if (this.userId !== null) 
+    if (this.userIdSubject.getValue() !== null) 
     {
-      return of(this.userId);
+      return this.userIdSubject.asObservable();
 
     }
    else
@@ -35,21 +35,18 @@ export class UserService {
       return new Observable(observer => {
         this.fetchUserId().subscribe({
           next: (response: any) => {
-            this.userId = response.userId;
-            observer.next(this.userId); 
+            this.userIdSubject.next(response.userId);
+            observer.next(this.userIdSubject.getValue()); 
             observer.complete();
           },
-          error: (err) => {
-            console.error('Failed to fetch user ID', err);
-            observer.error(err); 
-          }
+
         });
       });
     }
   }
 
   clearUserDetails(): void {
-    this.userId = null;
+    this.userIdSubject.next(null);
   }
   
 

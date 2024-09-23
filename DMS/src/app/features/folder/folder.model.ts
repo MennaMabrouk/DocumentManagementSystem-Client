@@ -3,6 +3,5 @@ export interface FolderModel {
     Name: string;
     CreationDate: Date;
     IsPublic: boolean;
-    // WorkspaceId: number;
- 
+  
   }

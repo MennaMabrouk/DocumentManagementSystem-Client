@@ -1,8 +1,10 @@
-// export interface DocumentModel {
-//     FolderId: number;
-//     Name: string;
-//     CreationDate: Date;
-//     IsPublic: boolean;
-//     WorkspaceId: number;
+export interface DocumentModel {
+    DocumentId: number;
+    Name: string;
+    CreationDate: Date;
+    Type: string;
+    Version: string;
+    Tag : string;
+    FolderId: number;
  
-//   }
+  }

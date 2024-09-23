@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Create New Folder</h2>
+
+<form [formGroup]="folderForm" (ngSubmit)="onCreate()">
+  <mat-form-field appearance="fill">
+    <mat-label>Folder Name</mat-label>
+    <input matInput formControlName="Name" placeholder="Enter folder name">
+    @if (folderForm.get('Name')?.hasError('required')||folderForm.get('Name')?.hasError('maxlength')){
+        <mat-error>{{ getErrorMessage('Name') }}</mat-error>
+      }     
+
+  </mat-form-field>
+
+  <mat-checkbox formControlName="IsPublic">Make Public</mat-checkbox>
+
+  <div mat-dialog-actions>
+    <button mat-button type="submit" [disabled]="folderForm.invalid">Create</button>
+    <button mat-button type="button" (click)="onCancel()">Cancel</button>
+  </div>
+</form>

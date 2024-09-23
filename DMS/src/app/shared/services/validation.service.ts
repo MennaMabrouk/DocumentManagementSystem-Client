@@ -46,6 +46,10 @@ export class ValidationService {
           return this.validationMessages.genderMaxLength;
         }
       }
+      else if (control.errors['maxlength'])
+      {
+        return this.validationMessages.nameMaxLength;
+      }
       
     }
 

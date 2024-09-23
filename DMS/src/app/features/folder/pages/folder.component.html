@@ -1,1 +1,11 @@
-<app-listing [data] = "foldersData"></app-listing>
+@if(context==='workspace')
+{
+  <div class="folder-actions">
+    <button mat-raised-button color="primary" (click)="openCreateFolderDialog()">Create Folder</button>
+  </div>
+}
+
+  
+<app-listing [data] = "foldersData"
+(onUpdateFolder)="openUpdateDialog($event)"
+(onDeleteFolder)="openDeleteDialog($event)" ></app-listing>
