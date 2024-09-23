@@ -48,9 +48,19 @@ export class ValidationService {
       }
       else if (control.errors['maxlength'])
       {
-        return this.validationMessages.nameMaxLength;
+        if (controlName === 'Name')
+           {
+            return this.validationMessages.nameMaxLength;
+          } 
+          else if (controlName === 'Version')
+             {
+             return this.validationMessages.versionMaxLength;
+          } 
+          else if (controlName === 'Tag')
+         {
+          return this.validationMessages.tagMaxLength;
+        }
       }
-      
     }
 
     return '';

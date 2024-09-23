@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-delete-document-dialog',
@@ -9,4 +10,17 @@ import { Component } from '@angular/core';
 })
 export class DeleteDocumentDialogComponent {
 
+  constructor(public dialogRef : MatDialogRef<DeleteDocumentDialogComponent>,
+    @Inject (MAT_DIALOG_DATA) public data :{ documentId : number}) {}
+  
+  onCancel() : void
+  {
+    this.dialogRef.close();
+  }
+
+  onConfirm() : void
+  {
+    this.dialogRef.close(true);
+  }
+  
 }

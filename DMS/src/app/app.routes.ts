@@ -5,6 +5,7 @@ import { FolderComponent } from './features/folder/pages/folder.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { authGuard } from './core/auth/guards/auth.guard';
 import { roleGuard } from './core/auth/guards/role.guard';
+import { DocumentComponent } from './features/document/pages/document.component';
 
 export const routes: Routes = [
 
@@ -13,6 +14,13 @@ export const routes: Routes = [
         component: FolderComponent,
         canActivate:[authGuard,roleGuard],
         data: { role: ['User' ,'Admin'] , context : 'workspace' }
+
+    },
+    {
+        path: 'document/:folderId',
+        component: DocumentComponent,
+        canActivate:[authGuard,roleGuard],
+        data: { role: ['User' ,'Admin']  }
 
     },
     {

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SingeltonService } from '../../shared/services/singelton.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { UserModel } from './user.model';
+import { StorageService } from '../../shared/services/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class UserService {
 
   private userIdSubject : BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
 
-  constructor(private singleton : SingeltonService) { }
+  constructor(private singleton : SingeltonService,
+            private storageService : StorageService) { }
 
   fetchUserId() : Observable<any>
   {
@@ -50,4 +52,14 @@ export class UserService {
   }
   
 
+
+  getRole(): string | null
+  {
+    return this.storageService.getItem('Role'); 
+  }
+
+  isAdmin(): boolean 
+  {
+    return this.getRole() === 'Admin'; 
+  }
 }

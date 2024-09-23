@@ -12,14 +12,36 @@ export class DocumentService {
 
 GetDocumentsByFolderId(folderId : number) : Observable<DocumentModel[]>
 {
-  return this.singleton.getRequest(`Document/{$folderId}`)
+  return this.singleton.getRequest<DocumentModel[]>(`Document/${folderId}`)
 }
 
-// GetDocumentMetaDataByDocumentId(documentId : number) : Observable<DocumentModel>
+GetDocumentById(documentId : number) : Observable<DocumentModel>
+{
+  return this.singleton.getRequest<DocumentModel>(`Document/${documentId}`);
+}
+
+UpdateDocument(document : DocumentModel) : Observable<any>
+{
+  return this.singleton.putRequest('Document',document);
+}
+
+DeleteDocument(documentId : number ) : Observable<any>
+{
+  return this.singleton.deleteRequest(`Document/${documentId}`);
+}
+
+// PreviewDocument(documentId : number) : Observable<>
 // {
-//   return this.singleton.getRequest()
+//   return this.singleton.getRequest(`Document/Preview/${documentId}`);
 // }
 
-// PreviewDocument(documentId : number) : Observable<
+// UploadDocument(documentData : FormData) : Observable<any>
+// {
+//   return this.singleton.postRequest('Document/Upload',documentData);
+// }
 
+// DownloadDocument(documentId : number) : Observable<>
+// {
+//   return this.singleton.getRequest(`Document/Download/${documentId}`);
+// }
 }

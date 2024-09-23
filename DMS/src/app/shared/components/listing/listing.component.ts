@@ -16,21 +16,24 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './listing.component.scss',
   providers: [KeyValuePipe]
 })
-export class ListingComponent implements OnInit, OnChanges {
+export class ListingComponent implements OnChanges {
 
   @Input() data: Item[] = [];
-  // @Input() context! :  'workspace' | 'shared';
-  @Output() onUpdateFolder = new EventEmitter<number>();
+  @Input() context :  'workspace' | 'shared' = 'workspace';
+  @Input() isAdmin : boolean = false
+  @Input() type    : 'folder' | 'document' = 'folder';
+
+  @Output() folderSelected = new EventEmitter<number>;
+
+  @Output() onUpdateFolder = new EventEmitter<Item>();
   @Output() onDeleteFolder = new EventEmitter<number>();
+  // @Output() onUpdateDocument = new EventEmitter<Item>();
+  // @Output() onDeleteDocument = new EventEmitter<number>();
 
 
   displayedColumns: string[] = [];
 
   constructor(private keyValuePipe: KeyValuePipe) {}
-
-  ngOnInit(): void {
-    // Initial setup or pre-data logic can go here
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     // console.log("The data:",this.data);
@@ -45,13 +48,38 @@ export class ListingComponent implements OnInit, OnChanges {
     }
   }
 
-  triggerUpdateFolder(folderId: number): void {
-    this.onUpdateFolder.emit(folderId);  
+  triggerUpdate(item: Item): void
+ {
+
+        if(this.type === 'folder')
+        {
+          this.onUpdateFolder.emit(item);  
+        }
+        else if (this.type === 'document')
+        {
+          // this.onUpdateDocument.emit(item);
+        }
+    
   }
 
-  triggerDeleteFolder(folderId: number): void {
-    this.onDeleteFolder.emit(folderId);  
+  triggerDelete(item: Item): void
+  {
+
+          if(this.type === 'folder')
+          {
+            this.onDeleteFolder.emit(item['FolderId']);  
+          }
+          else if (this.type === 'document')
+          {
+            // this.onDeleteDocument.emit(item['DocumentId']);  
+          }
+      }
+    
+
+      selectFolder(folderId: number) {
+        this.folderSelected.emit(folderId); //for documents api
+      }
   }
 
 
-}
+
