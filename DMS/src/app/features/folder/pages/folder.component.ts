@@ -9,7 +9,6 @@ import { UpdateFolderDialogComponent } from '../../../shared/components/dialogs/
 import { DeleteFolderDialogComponent } from '../../../shared/components/dialogs/delete-folder-dialog/delete-folder-dialog.component';
 import { CreateFolderDialogComponent } from '../../../shared/components/dialogs/create-folder-dialog/create-folder-dialog.component';
 import { Item } from '../../../shared/item.interface';
-import { DocumentService } from '../../document/document.service';
 
 @Component({
   selector: 'app-folder',
@@ -33,30 +32,32 @@ export class FolderComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => {
-      if (data['context'] === 'shared') {
+    this.route.queryParams.subscribe(params => {
+      this.context = params['context'] || 'workspace';
+      if (this.context === 'shared') 
+      {
         this.context = 'shared';
         this.fetchSharedFolders();
-      }
-      else {
+      } else {
+        
         this.context = 'workspace';
         this.userService.getUserId().subscribe(userId => {
-          if (userId !== null)
+          if (userId !== null) {
             this.fetchFolders(userId);
-        })
+          }
+        });
       }
     });
 
-
+    // Set admin status
     this.isAdmin = this.userService.isAdmin();
-
   }
 
   fetchFolders(userId: number | null): void {
     if (userId !== null) {
       this.folderService.getAllFoldersByUserId(userId).subscribe(folders => {
         this.foldersData = folders;
-        // console.log("Parent component foldersData: ", this.foldersData);
+        console.log("Parent component foldersData: ", this.foldersData);
       });
     }
     else {
@@ -68,10 +69,6 @@ export class FolderComponent implements OnInit {
 
   fetchSharedFolders() {
     this.folderService.GetAllPublicFolders().subscribe(folders => {
-      // console.log('API response for public folders:', folders);
-      // folders.forEach(folder => {
-      //   console.log('Folder:', folder);
-      // });
       this.foldersData = folders.filter(folder => folder.IsPublic)
       // console.log('Filtered public folders:', this.foldersData);
       // console.log('Shared directories (public folders): ', this.foldersData);
@@ -81,7 +78,7 @@ export class FolderComponent implements OnInit {
 
   openFolder(folderId: number): void {
 
-    this.router.navigateByUrl(`/document/${folderId}`)
+    this.router.navigate(['/document', folderId], { queryParams: { context: this.context } });
   }
 
   openCreateFolderDialog(): void {

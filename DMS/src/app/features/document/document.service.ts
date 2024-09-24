@@ -12,7 +12,7 @@ export class DocumentService {
 
 GetDocumentsByFolderId(folderId : number) : Observable<DocumentModel[]>
 {
-  return this.singleton.getRequest<DocumentModel[]>(`Document/${folderId}`)
+  return this.singleton.getRequest<DocumentModel[]>(`Document/documents/${folderId}`)
 }
 
 GetDocumentById(documentId : number) : Observable<DocumentModel>
@@ -30,18 +30,19 @@ DeleteDocument(documentId : number ) : Observable<any>
   return this.singleton.deleteRequest(`Document/${documentId}`);
 }
 
-// PreviewDocument(documentId : number) : Observable<>
-// {
-//   return this.singleton.getRequest(`Document/Preview/${documentId}`);
-// }
 
-// UploadDocument(documentData : FormData) : Observable<any>
-// {
-//   return this.singleton.postRequest('Document/Upload',documentData);
-// }
+UploadDocument(documentData : FormData) : Observable<any>
+{
+  return this.singleton.postRequest('Document/Upload',documentData);
+}
 
-// DownloadDocument(documentId : number) : Observable<>
-// {
-//   return this.singleton.getRequest(`Document/Download/${documentId}`);
-// }
+PreviewDocument(documentId : number) : Observable<Blob>
+{
+  return this.singleton.getBlobRequest(`Document/Preview/${documentId}`);
+}
+
+DownloadDocument(documentId : number) : Observable<Blob>
+{
+  return this.singleton.getBlobRequest(`Document/Download/${documentId}`);
+}
 }

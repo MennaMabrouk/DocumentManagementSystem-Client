@@ -1,4 +1,4 @@
-@if(!isAdmin && context !='shared')
+@if(!isAdmin && context ==='workspace')
 {
   <div class="folder-actions">
     <button mat-raised-button color="primary" (click)="openCreateFolderDialog()">Create Folder</button>

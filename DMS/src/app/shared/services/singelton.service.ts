@@ -33,4 +33,13 @@ deleteRequest<T>(endpoint : string) : Observable<T>
   return this.http.delete<T>(`${this.apiUrl}/${endpoint}`);
 }
 
+
+//GET for document
+getBlobRequest(endpoint: string): Observable<Blob> 
+{
+  return this.http.get(`${this.apiUrl}/${endpoint}`, { responseType: 'blob' });
 }
+
+
+}
+

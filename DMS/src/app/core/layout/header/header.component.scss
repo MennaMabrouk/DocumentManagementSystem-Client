@@ -1,4 +1,8 @@
 .header {
+  // .mat-tab-link {
+  //   color: white !important; 
+  // }
+
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -15,20 +19,5 @@
     margin-right: 20px;
   }
 
-  // nav {
-  //   display: flex;
-  //   flex-grow: 1;
-  //   justify-content: flex-start;
-  //   margin-left: 20px;
 
-  //   a {
-  //     color: white;
-  //     text-decoration: none;
-  //     margin-right: 20px;
-  //     font-weight: bold;
-  //     &.active {
-  //       border-bottom: 2px solid white;
-  //     }
-  //   }
-  // }
 }
