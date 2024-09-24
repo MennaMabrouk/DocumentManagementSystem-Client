@@ -5,9 +5,9 @@ import { FolderModel } from '../folder.model';
 import { ListingComponent } from '../../../shared/components/listing/listing.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { UpdateFolderDialogComponent } from '../../../shared/components/dialogs/update-folder-dialog/update-folder-dialog.component';
-import { DeleteFolderDialogComponent } from '../../../shared/components/dialogs/delete-folder-dialog/delete-folder-dialog.component';
-import { CreateFolderDialogComponent } from '../../../shared/components/dialogs/create-folder-dialog/create-folder-dialog.component';
+import { UpdateFolderDialogComponent } from '../dialogs/update-folder-dialog/update-folder-dialog.component';
+import { DeleteFolderDialogComponent } from '../dialogs/delete-folder-dialog/delete-folder-dialog.component';
+import { CreateFolderDialogComponent } from '../dialogs/create-folder-dialog/create-folder-dialog.component';
 import { Item } from '../../../shared/item.interface';
 
 @Component({
@@ -39,7 +39,7 @@ export class FolderComponent implements OnInit {
         this.context = 'shared';
         this.fetchSharedFolders();
       } else {
-        
+
         this.context = 'workspace';
         this.userService.getUserId().subscribe(userId => {
           if (userId !== null) {

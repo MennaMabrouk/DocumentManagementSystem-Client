@@ -1,13 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FolderModel } from '../../../../features/folder/folder.model';
+import { FolderModel } from '../../folder.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { ValidationService } from '../../../services/validation.service';
+import { ValidationService } from '../../../../shared/services/validation.service';
 
 @Component({
   selector: 'app-create-folder-dialog',

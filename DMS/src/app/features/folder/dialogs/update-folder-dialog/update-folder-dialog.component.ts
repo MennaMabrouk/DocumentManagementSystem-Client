@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FolderModel } from '../../../../features/folder/folder.model';
+import { FolderModel } from '../../folder.model';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({

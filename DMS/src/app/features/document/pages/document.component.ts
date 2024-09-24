@@ -6,9 +6,9 @@ import { ListingComponent } from '../../../shared/components/listing/listing.com
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../user/user.service';
 import { Item } from '../../../shared/item.interface';
-import { UpdateDocumentDialogComponent } from '../../../shared/components/dialogs/update-document-dialog/update-document-dialog.component';
-import { DeleteDocumentDialogComponent } from '../../../shared/components/dialogs/delete-document-dialog/delete-document-dialog.component';
-import { CreateDocumentDialogComponent } from '../../../shared/components/dialogs/create-document-dialog/create-document-dialog.component';
+import { UpdateDocumentDialogComponent } from '../dialogs/update-document-dialog/update-document-dialog.component';
+import { DeleteDocumentDialogComponent } from '../dialogs/delete-document-dialog/delete-document-dialog.component';
+import { CreateDocumentDialogComponent } from '../dialogs/create-document-dialog/create-document-dialog.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({

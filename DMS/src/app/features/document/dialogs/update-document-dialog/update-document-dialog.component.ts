@@ -6,8 +6,8 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { DocumentModel } from '../../../../features/document/document.model';
-import { ValidationService } from '../../../services/validation.service';
+import { DocumentModel } from '../../document.model';
+import { ValidationService } from '../../../../shared/services/validation.service';
 
 @Component({
   selector: 'app-update-document-dialog',
