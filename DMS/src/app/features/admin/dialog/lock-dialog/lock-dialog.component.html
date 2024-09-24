@@ -1,11 +1,34 @@
-<!-- <h2 mat-dialog-title>Lock User</h2>
-<mat-dialog-content>
-  <p>Enter the lock duration in hours for {{ data.user.name }}:</p>
-  <mat-form-field>
-    <input matInput [(ngModel)]="lockTime" type="number" min="1" placeholder="Lock Time (hours)">
+<h2 mat-dialog-title>
+  <mat-icon>lock</mat-icon>Lock User
+</h2>
+
+<form [formGroup]="adminForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Lock Duration</mat-label>
+    <input matInput formControlName="lockTime" placeholder="Enter duration" type="number" min="1">
+      <mat-icon matSuffix>schedule</mat-icon>
+      @if (adminForm.get('lockTime')?.hasError('min'))
+      {
+        <mat-error>{{ getErrorMessage('lockTime') }}</mat-error>
+      }     
   </mat-form-field>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button (click)="onLock()">Lock</button>
-</mat-dialog-actions> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>Time Unit</mat-label>
+    <mat-select formControlName="timeUnit">
+      <mat-option value="minutes">Minutes</mat-option>
+      <mat-option value="hours">Hours</mat-option>
+      <mat-option value="days">Days</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <p><em>If not provided, the default lock time is 1 hour.</em></p>
+
+  <div mat-dialog-actions>
+    <button mat-button type="submit" [disabled]="adminForm.invalid">
+      <mat-icon>lock</mat-icon> Lock
+    </button>
+    <button mat-button type="button" (click)="onCancel()">
+      <mat-icon>close</mat-icon> Cancel </button>
+  </div>
+</form>

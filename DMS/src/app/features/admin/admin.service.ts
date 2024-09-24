@@ -15,9 +15,9 @@ export class AdminService {
     return this.singelton.getRequest<UserModel[]>('User');
   }
 
-  lockUser(userId : number , lockTime : number | null = null) : Observable<any>
+  lockUser(userId : number , lockTime : number, timeUnit : string) : Observable<any>
   {
-    const payload = lockTime ? { lockTime } : {};
+    const payload = {lockTime , timeUnit}
     return this.singelton.postRequest<any>(`User/lock/${userId}`,payload);
   }
 

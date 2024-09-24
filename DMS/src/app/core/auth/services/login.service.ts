@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LoginUserModel } from '../models/login-user.model';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 import { SingeltonService } from '../../../shared/services/singelton.service';
 import { StorageService } from '../../../shared/services/storage.service';
 import { NavigationService } from '../../../shared/services/navigation.service';
@@ -11,19 +11,18 @@ import { UserService } from '../../../features/user/user.service';
 })
 export class LoginService {
 
-  userChange$ : BehaviorSubject<{ isLoggedIn: boolean, role: string | null }>;
+  userChange$: BehaviorSubject<{ isLoggedIn: boolean, role: string | null }>;
 
-  constructor(private singelton : SingeltonService,
-              private storage : StorageService,
-              private navigationService : NavigationService,
-              private userService : UserService) 
-              {
-                this.userChange$ = new BehaviorSubject({
-                  isLoggedIn: !!this.storage.getItem('token'),
-                  role: this.storage.getItem('role')
-                });
-              
-              }
+  constructor(private singelton: SingeltonService,
+    private storage: StorageService,
+    private navigationService: NavigationService,
+    private userService: UserService) {
+    this.userChange$ = new BehaviorSubject({
+      isLoggedIn: !!this.storage.getItem('token'),
+      role: this.storage.getItem('role')
+    });
+
+  }
 
 
 
@@ -42,9 +41,17 @@ export class LoginService {
             console.error('Failed to fetch user ID', err);
           }
         });
-        
+
         this.userChange$.next({ isLoggedIn: true, role: response.role })
         return response;
+      }),
+      catchError(error => {
+        // Handle lockout 
+        if (error.status === 403) {
+          const lockoutMessage = error.error || 'Your account is locked.';
+          return throwError(() => new Error(lockoutMessage)); 
+        }
+        return throwError(() => new Error('Login failed, please try again.'));
       })
     );
   }
@@ -58,9 +65,8 @@ export class LoginService {
 
   }
 
-  logout() : void
-  { 
-    
+  logout(): void {
+
     this.storage.removeItem('token');
     this.storage.removeItem('expiration');
     this.storage.removeItem('role');

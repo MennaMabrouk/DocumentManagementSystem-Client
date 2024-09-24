@@ -5,6 +5,10 @@ import { RoleService } from '../../../shared/services/role.service';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule, KeyValuePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { LockDialogComponent } from '../dialog/lock-dialog/lock-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-admin',
@@ -23,15 +27,16 @@ export class AdminComponent implements OnInit {
 
   constructor(private adminService: AdminService,
     private roleService: RoleService,
-    private keyValuePipe: KeyValuePipe) { }
+    private keyValuePipe: KeyValuePipe,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
 
     this.isAdmin = this.roleService.isAdmin();
 
-    if (this.isAdmin) 
-    {
-  
+    if (this.isAdmin) {
+
       this.fetchAllUsers();
 
     }
@@ -47,36 +52,44 @@ export class AdminComponent implements OnInit {
   }
 
 
-  lockUser(userId: number) 
-  {
-    this.adminService.lockUser(userId).subscribe(() => {
-      alert('User locked successfully')
+  lockUser(userId: number, lockTime: number, timeUnit: string) {
+    this.adminService.lockUser(userId, lockTime, timeUnit).subscribe(() => {
+      this.snackBar.open('User locked successfully', 'Close', { duration: 2000 });
       this.fetchAllUsers(); //for refreshing the table after
     });
   }
 
 
-  unlockUser(userId: number)
-   {
+  unlockUser(userId: number) {
     this.adminService.unlockUser(userId).subscribe(() => {
-      alert('User unlocked successfully')
+      this.snackBar.open('User unlocked successfully', 'Close', { duration: 2000 });
       this.fetchAllUsers(); //for refreshing the table after
     });
   }
 
-  ExtractKeyOfUsers() : void
-  {
-    if (this.usersData.length > 0) 
-      {
-        const keyValueArray = this.keyValuePipe.transform(this.usersData[0]);
-        this.displayedColumns = keyValueArray.map(entry => entry.key)
-                .filter(key => key !== 'WorkspaceName');
-      }
-      else 
-      {
-        this.displayedColumns = [];
-      }
+  ExtractKeyOfUsers(): void {
+    if (this.usersData.length > 0) {
+      const keyValueArray = this.keyValuePipe.transform(this.usersData[0]);
+      this.displayedColumns = keyValueArray.map(entry => entry.key)
+        .filter(key => key !== 'WorkspaceName');
+    }
+    else {
+      this.displayedColumns = [];
+    }
 
+  }
+
+  openLockDialog(userId: number) {
+    const dialogRef = this.dialog.open(LockDialogComponent, {
+      width: '300px',
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.lockUser(userId, result.lockTime, result.timeUnit);
+      }
+    });
   }
 
 }

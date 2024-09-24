@@ -61,6 +61,10 @@ export class ValidationService {
           return this.validationMessages.tagMaxLength;
         }
       }
+      else if(control.errors['min'])
+      {
+        return this.validationMessages.lockTimeMin;
+      }
     }
 
     return '';

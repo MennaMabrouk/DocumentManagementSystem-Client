@@ -9,7 +9,8 @@
       "genderMaxLength": "Gender must be a maximum of 6 characters.",
       "nameMaxLength": "Name must be a maximum of 50 characters.",
       "versionMaxLength": "Version must be a maximum of 20 characters.",
-      "tagMaxLength": "Tag must be a maximum of 100 characters."
+      "tagMaxLength": "Tag must be a maximum of 100 characters.",
+      "min": "Lock time must be greater than 0."
     }
   }
   
