@@ -1,0 +1,58 @@
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 3rem;
+}
+
+h2.text-center {
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: #333; /* Matches Angular Material style */
+}
+
+mat-card {
+  max-width: 400px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+mat-card-header {
+  display: flex;
+  align-items: center;
+  
+  div[mat-card-avatar] {
+      margin-right: 16px;
+  }
+
+  img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+  }
+}
+
+mat-card-content p {
+  margin: 0.5rem 0;
+}
+
+// mat-card-actions {
+//   display: flex;
+//   justify-content: center;
+// }
+
+// .form-actions {
+//   display: flex;
+//   justify-content: center;
+// }
+
+@media (max-width: 768px) {
+  .profile-container {
+      padding: 1rem;
+  }
+}

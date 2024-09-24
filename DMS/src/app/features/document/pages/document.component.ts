@@ -4,12 +4,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { DocumentModel } from '../document.model';
 import { ListingComponent } from '../../../shared/components/listing/listing.component';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../../user/user.service';
 import { Item } from '../../../shared/item.interface';
 import { UpdateDocumentDialogComponent } from '../dialogs/update-document-dialog/update-document-dialog.component';
 import { DeleteDocumentDialogComponent } from '../dialogs/delete-document-dialog/delete-document-dialog.component';
 import { CreateDocumentDialogComponent } from '../dialogs/create-document-dialog/create-document-dialog.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { RoleService } from '../../../shared/services/role.service';
 
 @Component({
   selector: 'app-document',
@@ -31,7 +31,7 @@ export class DocumentComponent implements OnInit {
   constructor(private documentService: DocumentService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
-    private userService: UserService,
+    private roleService: RoleService,
     private sanitizer : DomSanitizer) { }
 
 
@@ -49,7 +49,7 @@ export class DocumentComponent implements OnInit {
 
     });
 
-    this.isAdmin = this.userService.isAdmin();
+    this.isAdmin = this.roleService.isAdmin();
 
   }
 

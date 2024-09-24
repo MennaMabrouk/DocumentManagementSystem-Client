@@ -2,43 +2,32 @@ import { Injectable } from '@angular/core';
 import { SingeltonService } from '../../shared/services/singelton.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { UserModel } from './user.model';
-import { StorageService } from '../../shared/services/storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private userIdSubject : BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
+  private userIdSubject: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
 
-  constructor(private singleton : SingeltonService,
-            private storageService : StorageService) { }
+  constructor(private singleton: SingeltonService) { }
 
-  fetchUserId() : Observable<any>
-  {
+  fetchUserId(): Observable<any> {
     return this.singleton.getRequest("User/details");
-  }
-
-  //For Admin
-  getAllUsers(): Observable<UserModel[]>
-  {
-    return this.singleton.getRequest<UserModel[]>('User');
   }
 
 
   getUserId(): Observable<number | null> {
-    if (this.userIdSubject.getValue() !== null) 
-    {
+    if (this.userIdSubject.getValue() !== null) {
       return this.userIdSubject.asObservable();
 
     }
-   else
-   {
+    else {
       return new Observable(observer => {
         this.fetchUserId().subscribe({
           next: (response: any) => {
             this.userIdSubject.next(response.userId);
-            observer.next(this.userIdSubject.getValue()); 
+            observer.next(this.userIdSubject.getValue());
             observer.complete();
           },
 
@@ -50,16 +39,13 @@ export class UserService {
   clearUserDetails(): void {
     this.userIdSubject.next(null);
   }
-  
 
 
-  getRole(): string | null
+  getUserById(userId : number) : Observable<UserModel>
   {
-    return this.storageService.getItem('Role'); 
+    return this.singleton.getRequest<UserModel>(`User/${userId}`);
   }
 
-  isAdmin(): boolean 
-  {
-    return this.getRole() === 'Admin'; 
-  }
+
+
 }

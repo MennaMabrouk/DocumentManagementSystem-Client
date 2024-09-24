@@ -53,7 +53,7 @@ export class LoginService {
     this.storage.setItem('token', token);
     this.storage.setItem('expiration', expiration);
     this.storage.setItem('role', role);
-    console.log('Stored Role:', role); 
+    // console.log('Stored Role:', role); 
 
 
   }

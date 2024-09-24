@@ -2,16 +2,12 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges, EventEmitter, Outpu
 import { Item } from '../../item.interface';
 import { CommonModule, KeyValuePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { MatTabsModule } from '@angular/material/tabs';
-import { FolderModel } from '../../../features/folder/folder.model';
 import { MatIconModule } from '@angular/material/icon';
-import { DocumentModel } from '../../../features/document/document.model';
 
 @Component({
   selector: 'app-listing',
   standalone: true,
-  imports: [MatTableModule, CommonModule, MatTableModule,
-    MatIconModule
+  imports: [CommonModule, MatTableModule, MatIconModule
   ],
   templateUrl: './listing.component.html',
   styleUrl: './listing.component.scss',
@@ -20,8 +16,6 @@ import { DocumentModel } from '../../../features/document/document.model';
 export class ListingComponent implements OnChanges {
 
   @Input() data: Item[] = [];
-  // @Input() foldersData : FolderModel[] = [];
-  // @Input() documentsData : DocumentModel[] = [];
   @Input() context: 'workspace' | 'shared' = 'workspace';
   @Input() isAdmin: boolean = false
   @Input() type: 'folder' | 'document' = 'folder';

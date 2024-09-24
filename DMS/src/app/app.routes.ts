@@ -6,6 +6,9 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
 import { authGuard } from './core/auth/guards/auth.guard';
 import { roleGuard } from './core/auth/guards/role.guard';
 import { DocumentComponent } from './features/document/pages/document.component';
+import { UserComponent } from './features/user/pages/user.component';
+import { AdminComponent } from './features/admin/pages/admin.component';
+import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
 
 export const routes: Routes = [
 
@@ -30,6 +33,20 @@ export const routes: Routes = [
         data: { role: ['User' ,'Admin'] , context : 'shared' }
     },
     {
+        path: 'profile',
+        component: UserComponent,
+        canActivate:[authGuard,roleGuard],
+        data: { role: ['User' ,'Admin']  }
+
+    },
+    {
+        path: 'get-all-users',
+        component: AdminComponent,
+        canActivate:[authGuard,roleGuard],
+        data: { role: ['Admin']  }
+
+    },
+    {
         path: 'login',
         component: LoginComponent
     },
@@ -41,6 +58,10 @@ export const routes: Routes = [
         path: '',
         pathMatch: 'full',
         redirectTo: 'login'
+    } ,
+    { 
+        path: 'unauthorized',
+        component: UnauthorizedComponent
     } ,
     { //Wildcard
         path:'**',

@@ -1,1 +1,36 @@
-<p>user works!</p>
+<div class="profile-container">
+    @if(userProfile)
+    {
+    <h2 class="mat-h2 text-center">Welcome in your profile</h2>
+    <mat-card>
+        <mat-card-header>
+            <img mat-card-avatar src="assets/profile.jpg" alt="Profile Avatar" />
+            <mat-card-title>{{ userProfile.Username }}</mat-card-title>
+            <mat-card-subtitle>{{ userProfile.Email }}</mat-card-subtitle>
+        </mat-card-header>
+
+        @for(user of userProfile | keyvalue ; track user.key)
+        {
+        <ng-container>
+            @if (user.key !== 'Username' && user.key !== 'Email')
+            {
+            @if(!(isAdmin && user.key === 'WorkspaceName'))
+            {
+            <mat-card-content>
+                <p><strong>{{ user.key }}:</strong> {{ user.value ? user.value : 'Unknown' }}</p>
+            </mat-card-content>
+            }
+            }
+        </ng-container>
+
+        }
+        <!-- @if(!isAdmin)
+        {
+        <mat-card-actions class="form-actions">
+              <button mat-raised-button color="primary" >View</button>
+            </mat-card-actions>
+        } -->
+    </mat-card>
+
+    }
+</div>

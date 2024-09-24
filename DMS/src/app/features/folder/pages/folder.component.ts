@@ -9,6 +9,7 @@ import { UpdateFolderDialogComponent } from '../dialogs/update-folder-dialog/upd
 import { DeleteFolderDialogComponent } from '../dialogs/delete-folder-dialog/delete-folder-dialog.component';
 import { CreateFolderDialogComponent } from '../dialogs/create-folder-dialog/create-folder-dialog.component';
 import { Item } from '../../../shared/item.interface';
+import { RoleService } from '../../../shared/services/role.service';
 
 @Component({
   selector: 'app-folder',
@@ -26,6 +27,7 @@ export class FolderComponent implements OnInit {
 
   constructor(private folderService: FolderService,
     private userService: UserService,
+    private roleService : RoleService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
     protected router: Router) { }
@@ -38,7 +40,9 @@ export class FolderComponent implements OnInit {
       {
         this.context = 'shared';
         this.fetchSharedFolders();
-      } else {
+      } 
+      else
+       {
 
         this.context = 'workspace';
         this.userService.getUserId().subscribe(userId => {
@@ -50,14 +54,14 @@ export class FolderComponent implements OnInit {
     });
 
     // Set admin status
-    this.isAdmin = this.userService.isAdmin();
+    this.isAdmin = this.roleService.isAdmin();
   }
 
   fetchFolders(userId: number | null): void {
     if (userId !== null) {
       this.folderService.getAllFoldersByUserId(userId).subscribe(folders => {
         this.foldersData = folders;
-        console.log("Parent component foldersData: ", this.foldersData);
+        // console.log("Parent component foldersData: ", this.foldersData);
       });
     }
     else {
