@@ -24,6 +24,7 @@ export class FolderComponent implements OnInit {
   foldersData: FolderModel[] = [];
   isAdmin: boolean = false;
   isShared = false;
+  userId: number | null = null; 
 
 
   constructor(private folderService: FolderService,
@@ -35,37 +36,43 @@ export class FolderComponent implements OnInit {
     protected router: Router,) { }
 
 
-  ngOnInit(): void {
+    ngOnInit(): void {
 
-    this.roleService.isAdminObservable().subscribe(isAdmin =>{
-      this.isAdmin = isAdmin
-    });
+      this.roleService.isAdminObservable().subscribe(isAdmin => {
+        this.isAdmin = isAdmin;
+      });
     
-    this.sharedService.getIsShared().subscribe(isShared =>{
-      this.isShared =isShared;
-
-      if (this.isShared) 
+      this.sharedService.getIsShared().subscribe(isShared => {
+        this.isShared = isShared;
+    
+        if (this.isShared || this.isAdmin) 
         {
           this.fetchSharedFolders();
         } 
-        else
-         {
-
-            this.userService.getUserId().subscribe(userId => {
-            if (userId !== null) 
+        else 
+        {
+          //admin
+          this.route.queryParams.subscribe(params => {
+            if (this.isAdmin && params['userId']) 
             {
-              this.fetchFolders(userId);
+              this.userId = +params['userId'];
+              this.fetchFolders(this.userId);
+            } 
+            else 
+            {
+              //user
+              this.userService.getUserId().subscribe(userId => {
+                if (userId !== null) 
+                {
+                  this.fetchFolders(userId);
+                }
+              });
             }
           });
         }
-
-    });
-
- 
-
-    // this.isAdmin = this.roleService.isAdmin();
-  }
-
+      });
+    }
+    
   fetchFolders(userId: number | null): void
    {
     if (userId !== null) {
@@ -89,9 +96,7 @@ export class FolderComponent implements OnInit {
 
   openFolder(folderId: number): void
   {
-
     this.router.navigate(['/document', folderId]);
-    // , { queryParams: { isShared: this.isShared } }
   }
 
   openCreateFolderDialog(): void 

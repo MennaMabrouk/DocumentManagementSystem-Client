@@ -11,7 +11,8 @@ export class AdminService {
   constructor(private singelton : SingeltonService) { }
 
 
-  getAllUsers(): Observable<UserModel[]> {
+  getAllUsers(): Observable<UserModel[]> 
+  {
     return this.singelton.getRequest<UserModel[]>('User');
   }
 
