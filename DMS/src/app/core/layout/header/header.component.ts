@@ -6,6 +6,7 @@ import { NavigationService } from '../../../shared/services/navigation.service';
 import { LoginService } from '../../auth/services/login.service';
 import { UserService } from '../../../features/user/user.service';
 import { RoleService } from '../../../shared/services/role.service';
+import { SharedService } from '../../../features/folder/shared.service';
 
 
 @Component({
@@ -24,20 +25,22 @@ export class HeaderComponent implements OnInit {
     route?: string
   }[] = [];
 
-  private userId: number | null = null;
+  // private userId: number | null = null;
 
 
   constructor(private storage: StorageService,
     protected router: Router,
     protected navigateService: NavigationService,
     private loginService: LoginService,
-    private roleService :RoleService) { }
+    private roleService :RoleService,
+    private sharedService : SharedService) { }
 
   ngOnInit(): void {
 
     this.roleService.getRole().subscribe((role) =>{
       this.role = role;
       this.setLinksByRole();
+      this.checkRoute();
     });
 
     // this.userService.getUserId().subscribe(userId => {
@@ -81,6 +84,37 @@ export class HeaderComponent implements OnInit {
       this.links.push({ label: 'Logout' });
     }
 
+  }
+
+  HandleTabClick(route : string)
+  {
+    if(route === '/shared-directories')
+    {
+      this.sharedService.setIsShared(true);
+    }
+    else if (route === '/workspace')
+    {
+      this.sharedService.setIsShared(false);
+    }
+    
+    this.navigateService.navigateTo(route);
+  }
+
+
+  checkRoute(): void 
+  {
+    this.router.events.subscribe(() => {
+
+      const currentRoute = this.router.url;
+      if (currentRoute.includes('shared-directories')) 
+      {
+        this.sharedService.setIsShared(true); 
+      } 
+      else 
+      {
+        this.sharedService.setIsShared(false); 
+      }
+    });
   }
 
   logout(): void 

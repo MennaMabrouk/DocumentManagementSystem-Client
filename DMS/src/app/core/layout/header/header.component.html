@@ -11,7 +11,7 @@
         @if (link.route)
          {
           <a mat-tab-link
-            (click)="navigateService.navigateTo(link.route)"
+            (click)="HandleTabClick(link.route)"
             [routerLink]="link.route"
             routerLinkActive="active"
             [active]="router.isActive(link.route, false)">
