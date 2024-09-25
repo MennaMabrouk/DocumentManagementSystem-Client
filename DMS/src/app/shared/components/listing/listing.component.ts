@@ -16,8 +16,8 @@ import { MatIconModule } from '@angular/material/icon';
 export class ListingComponent implements OnChanges {
 
   @Input() data: Item[] = [];
-  @Input() context: 'workspace' | 'shared' = 'workspace';
-  @Input() isAdmin: boolean = false
+  @Input() isShared : boolean = false;
+  @Input() isAdmin  : boolean   = false;
   @Input() type: 'folder' | 'document' = 'folder';
 
   @Output() folderSelected = new EventEmitter<number>;

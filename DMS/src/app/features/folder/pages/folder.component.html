@@ -1,4 +1,4 @@
-@if(!isAdmin && context ==='workspace')
+@if(!isAdmin && !isShared)
 {
   <div class="folder-actions">
     <button mat-raised-button color="primary" (click)="openCreateFolderDialog()">Create Folder</button>
@@ -9,7 +9,7 @@
 <app-listing 
 [data] = "foldersData"
 [isAdmin] = "isAdmin"
-[context] = "context"
+[isShared] = "isShared"
 [type] = "'folder'"
 (folderSelected)="openFolder($event)"
 (onUpdateFolder)="openUpdateDialog($event)"

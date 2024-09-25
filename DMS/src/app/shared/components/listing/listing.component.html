@@ -1,88 +1,88 @@
-  <table mat-table [dataSource]="data" class="mat-elevation-z8">
+<table mat-table [dataSource]="data" class="mat-elevation-z8">
 
-    @for (column of displayedColumns; track column) {
-      <ng-container [matColumnDef]="column">
-        <th mat-header-cell *matHeaderCellDef> {{ column | titlecase }} </th>
-        <td mat-cell *matCellDef="let row"> 
+  @for (column of displayedColumns; track column) {
+  <ng-container [matColumnDef]="column">
+    <th mat-header-cell *matHeaderCellDef> {{ column | titlecase }} </th>
+    <td mat-cell *matCellDef="let row">
 
-          @if (column === 'CreationDate')
-          {
-            {{ row[column] | date:'medium' }}
-          } 
-          @else if(column === 'Type')
-          {
-            @if(row['Type'] === '.pdf')
-            {
-              <mat-icon>picture_as_pdf</mat-icon>
-            }
-            @else if (row['Type'] === '.txt')
-            {
-              <mat-icon>text_snippet</mat-icon>
-            }
-            @else if (row['Type'] === '.docx')
-            {
-              <mat-icon>description</mat-icon>
-              
-            }
-            @else
-            {
-              <mat-icon>insert_drive_file</mat-icon> 
-            }
-            {{ row[column] }}
-          }
-          @else
-          {
-            {{ row[column] }}
-          }
-        </td>
+      @if (column === 'CreationDate')
+      {
+      {{ row[column] | date:'medium' }}
+      }
+      @else if(column === 'Type')
+      {
+      @if(row['Type'] === '.pdf')
+      {
+      <mat-icon>picture_as_pdf</mat-icon>
+      }
+      @else if (row['Type'] === '.txt')
+      {
+      <mat-icon>text_snippet</mat-icon>
+      }
+      @else if (row['Type'] === '.docx')
+      {
+      <mat-icon>description</mat-icon>
+
+      }
+      @else
+      {
+      <mat-icon>insert_drive_file</mat-icon>
+      }
+      {{ row[column] }}
+      }
+      @else
+      {
+      {{ row[column] }}
+      }
+    </td>
+  </ng-container>
+  }
+
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let row">
+      @if(type === 'folder')
+      {
+      <button mat-icon-button (click)="selectFolder(row['FolderId'])">
+        <mat-icon>folder_open</mat-icon>
+        <span class="tooltip-text">Open</span>
+      </button>
+      }
+
+      @else if(type === 'document')
+      {
+      <ng-container>
+        <button mat-icon-button (click)="previewDocument(row['DocumentId'])">
+          <mat-icon>visibility</mat-icon>
+          <span class="tooltip-text">Preview</span>
+        </button>
+        <button mat-icon-button (click)="downloadDocument(row['DocumentId'])">
+          <mat-icon>download</mat-icon>
+          <span class="tooltip-text">Download</span>
+        </button>
       </ng-container>
-    }
 
+      }
 
-    <ng-container matColumnDef="actions"> 
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let row">
-        @if(type === 'folder')
-        {
-          <button mat-icon-button (click)="selectFolder(row['FolderId'])">
-            <mat-icon>folder_open</mat-icon>
-            <span class="tooltip-text">Open</span>
-          </button>
-        }
+      @if(!isAdmin && !isShared)
+      {
+      <button mat-icon-button (click)="triggerUpdate(row)">
+        <mat-icon>edit</mat-icon>
+        <span class="tooltip-text">Edit</span>
+      </button>
+      <button mat-icon-button color="warn" (click)="triggerDelete(row)">
+        <mat-icon>delete</mat-icon>
+        <span class="tooltip-text">Delete</span>
+      </button>
+      }
+    </td>
+  </ng-container>
 
-        @else if(type === 'document')
-        {
-          <ng-container>
-            <button mat-icon-button (click)="previewDocument(row['DocumentId'])">
-              <mat-icon>visibility</mat-icon>
-              <span class="tooltip-text">Preview</span>
-            </button>
-            <button mat-icon-button (click)="downloadDocument(row['DocumentId'])">
-              <mat-icon>download</mat-icon>
-              <span class="tooltip-text">Download</span>
-            </button>
-          </ng-container>
-          
-        }
+  <!-- Header Row Definition -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns.concat(['actions'])"></tr>
 
-        @if(!isAdmin && context ==='workspace')
-        {
-        <button mat-icon-button (click)="triggerUpdate(row)">
-          <mat-icon>edit</mat-icon>
-          <span class="tooltip-text">Edit</span>
-        </button>
-        <button mat-icon-button color="warn" (click)="triggerDelete(row)">
-          <mat-icon>delete</mat-icon>
-          <span class="tooltip-text">Delete</span>
-        </button>
-        }
-      </td>
-    </ng-container>
+  <!-- Data Row Definition -->
+  <tr mat-row *matRowDef="let row; columns: displayedColumns.concat(['actions'])"></tr>
 
-    <!-- Header Row Definition -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns.concat(['actions'])"></tr>
-
-    <!-- Data Row Definition -->
-    <tr mat-row *matRowDef="let row; columns: displayedColumns.concat(['actions'])"></tr>
-
-  </table>
+</table>

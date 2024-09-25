@@ -13,10 +13,11 @@ import { UnauthorizedComponent } from './shared/components/unauthorized/unauthor
 export const routes: Routes = [
 
     {
-        path: 'workspace/:userId',
+        path: 'workspace',
         component: FolderComponent,
         canActivate:[authGuard,roleGuard],
-        data: { role: ['User' ,'Admin'] , context : 'workspace' }
+        data: { role: ['User' ,'Admin'] }
+        // , isShared : false
 
     },
     {
@@ -30,7 +31,8 @@ export const routes: Routes = [
         path: 'shared-directories',
         component: FolderComponent,
         canActivate:[authGuard,roleGuard],
-        data: { role: ['User' ,'Admin'] , context : 'shared' }
+        data: { role: ['User' ,'Admin']  }
+        // , isShared : true
     },
     {
         path: 'profile',

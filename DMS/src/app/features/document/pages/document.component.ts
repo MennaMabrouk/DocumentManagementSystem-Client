@@ -10,6 +10,7 @@ import { DeleteDocumentDialogComponent } from '../dialogs/delete-document-dialog
 import { CreateDocumentDialogComponent } from '../dialogs/create-document-dialog/create-document-dialog.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { RoleService } from '../../../shared/services/role.service';
+import { SharedService } from '../../folder/shared.service';
 
 @Component({
   selector: 'app-document',
@@ -23,7 +24,7 @@ export class DocumentComponent implements OnInit {
 
   documentsData: DocumentModel[] = [];
   isAdmin: boolean = false;
-  context: 'workspace' | 'shared' = 'workspace';
+  isShared: boolean = false;
 
   folderId: number | null = null;
   previewUrl: SafeResourceUrl | null = null;
@@ -32,49 +33,54 @@ export class DocumentComponent implements OnInit {
     private dialog: MatDialog,
     private route: ActivatedRoute,
     private roleService: RoleService,
-    private sanitizer : DomSanitizer) { }
+    private sharedService : SharedService,
+    private sanitizer: DomSanitizer) { }
 
 
   ngOnInit(): void {
+
+     // getting folderId from route params
     this.route.params.subscribe(params => {
       this.folderId = +params['folderId']
-      // console.log('folderId:', this.folderId);
       this.fetchDocumentsByFolderId(this.folderId);
-
     });
 
-    this.route.queryParams.subscribe(queryParams => {
-      this.context = queryParams['context'] || 'workspace'; 
-      // console.log('Document context:', this.context);
-
+    this.roleService.isAdminObservable().subscribe(isAdmin =>{
+      this.isAdmin = isAdmin
     });
 
-    this.isAdmin = this.roleService.isAdmin();
+    this.sharedService.getIsShared().subscribe(isShared =>{
+      this.isShared =isShared
+    });
 
   }
 
 
-  fetchDocumentsByFolderId(folderId: number | null): void {
-    if (folderId !== null) {
+  fetchDocumentsByFolderId(folderId: number | null): void 
+  {
+    if (folderId !== null)
+    {
       this.documentService.GetDocumentsByFolderId(folderId).subscribe(documents => {
         this.documentsData = documents;
-        // console.log("Parent component documentsData: ", this.documentsData);
       });
     }
-    else {
+    else 
+    {
       console.error('Folder ID is null. Unable to fetch documents.');
     }
 
   }
 
 
-  openCreateDocumentDialog(): void {
+  openCreateDocumentDialog(): void
+   {
     const dialogRef = this.dialog.open(CreateDocumentDialogComponent, {
       width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result)
+      {
         this.UploadDocument(result);
       }
     });
@@ -82,16 +88,17 @@ export class DocumentComponent implements OnInit {
   }
 
 
-  UploadDocument(formData: FormData) {
+  UploadDocument(formData: FormData)
+   {
     this.documentService.UploadDocument(formData).subscribe(() => {
       this.fetchDocumentsByFolderId(this.folderId)
     });
-
   }
 
 
 
-  openUpdateDialog(documentItem: Item): void {
+  openUpdateDialog(documentItem: Item): void 
+  {
 
     const document = documentItem as DocumentModel
 
@@ -101,7 +108,8 @@ export class DocumentComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(updatedDocument => {
-      if (updatedDocument) {
+      if (updatedDocument)
+      {
         this.updateDocument(updatedDocument);
       }
     });
@@ -110,7 +118,8 @@ export class DocumentComponent implements OnInit {
 
 
 
-  updateDocument(document: DocumentModel) {
+  updateDocument(document: DocumentModel) 
+  {
     this.documentService.UpdateDocument(document).subscribe(() => {
 
       this.fetchDocumentsByFolderId(this.folderId);
@@ -118,7 +127,8 @@ export class DocumentComponent implements OnInit {
     });
   }
 
-  openDeleteDialog(documentId: number): void {
+  openDeleteDialog(documentId: number): void 
+  {
     const dialogRef = this.dialog.open(DeleteDocumentDialogComponent, {
       width: '600px',
       height: '150px',
@@ -126,21 +136,23 @@ export class DocumentComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(confirmed => {
-      if (confirmed) {
+      if (confirmed) 
+      {
         this.deleteDocument(documentId);
       }
     }
     )
   }
 
-  deleteDocument(documentId: number) {
+  deleteDocument(documentId: number) 
+  {
     this.documentService.DeleteDocument(documentId).subscribe(() => {
       this.fetchDocumentsByFolderId(this.folderId)
     });
   }
 
 
-  previewDocument(documentId : number ) :void
+  previewDocument(documentId: number): void 
   {
     this.documentService.PreviewDocument(documentId).subscribe((blob) => {
       const url = URL.createObjectURL(blob); //create URL from the blob
@@ -149,15 +161,16 @@ export class DocumentComponent implements OnInit {
   }
 
 
-  downloadDocument(documentId: number): void {
+  downloadDocument(documentId: number): void 
+  {
     this.documentService.GetDocumentById(documentId).subscribe((documentData: DocumentModel) => {
-      const documentName = documentData.Name || 'document_' + documentId; 
-  
+      const documentName = documentData.Name || 'document_' + documentId;
+
       this.documentService.DownloadDocument(documentId).subscribe((blob) => {
         const url = window.URL.createObjectURL(blob);
         const anchor = document.createElement('a');
         anchor.href = url;
-        anchor.download = documentName; 
+        anchor.download = documentName;
         anchor.click();
         window.URL.revokeObjectURL(url);
       });

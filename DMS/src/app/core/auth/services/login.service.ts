@@ -5,33 +5,27 @@ import { SingeltonService } from '../../../shared/services/singelton.service';
 import { StorageService } from '../../../shared/services/storage.service';
 import { NavigationService } from '../../../shared/services/navigation.service';
 import { UserService } from '../../../features/user/user.service';
+import { RoleService } from '../../../shared/services/role.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  userChange$: BehaviorSubject<{ isLoggedIn: boolean, role: string | null }>;
-
   constructor(private singelton: SingeltonService,
     private storage: StorageService,
     private navigationService: NavigationService,
-    private userService: UserService) {
-    this.userChange$ = new BehaviorSubject({
-      isLoggedIn: !!this.storage.getItem('token'),
-      role: this.storage.getItem('role')
-    });
-
-  }
+    private userService: UserService,
+    private roleService : RoleService) {}
 
 
-
-  loginUser(loginUserDto: LoginUserModel): Observable<any> {
+  loginUser(loginUserDto: LoginUserModel): Observable<any> 
+  {
     return this.singelton.postRequest<any>('User/login', loginUserDto).pipe(
       map((response) => {
-        this.storeToken(response.token, response.expiration, response.role);
-        //  console.log("login service role res");
-        //  console.log(response.role);
+        this.storeToken(response.token, response.expiration);
+        this.roleService.setRole(response.role);
+
 
         this.userService.getUserId().subscribe({
           next: (userId) => {
@@ -42,12 +36,12 @@ export class LoginService {
           }
         });
 
-        this.userChange$.next({ isLoggedIn: true, role: response.role })
         return response;
       }),
       catchError(error => {
         // Handle lockout 
-        if (error.status === 403) {
+        if (error.status === 403)
+        {
           const lockoutMessage = error.error || 'Your account is locked.';
           return throwError(() => new Error(lockoutMessage)); 
         }
@@ -56,22 +50,21 @@ export class LoginService {
     );
   }
 
-  private storeToken(token: string, expiration: string, role: string): void {
+  private storeToken(token: string, expiration: string): void
+  {
     this.storage.setItem('token', token);
     this.storage.setItem('expiration', expiration);
-    this.storage.setItem('role', role);
-    // console.log('Stored Role:', role); 
-
-
+    // this.storage.setItem('role', role);
   }
 
-  logout(): void {
+  logout(): void 
+  {
 
     this.storage.removeItem('token');
     this.storage.removeItem('expiration');
-    this.storage.removeItem('role');
+    // this.storage.removeItem('role');
+    this.roleService.setRole(null);
     this.userService.clearUserDetails();
-    this.userChange$.next({ isLoggedIn: false, role: null }); // Update BehaviorSubject
     this.navigationService.navigateTo('/login');
 
   }

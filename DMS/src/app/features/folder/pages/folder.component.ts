@@ -10,6 +10,7 @@ import { DeleteFolderDialogComponent } from '../dialogs/delete-folder-dialog/del
 import { CreateFolderDialogComponent } from '../dialogs/create-folder-dialog/create-folder-dialog.component';
 import { Item } from '../../../shared/item.interface';
 import { RoleService } from '../../../shared/services/role.service';
+import { SharedService } from '../shared.service';
 
 @Component({
   selector: 'app-folder',
@@ -22,70 +23,79 @@ export class FolderComponent implements OnInit {
 
   foldersData: FolderModel[] = [];
   isAdmin: boolean = false;
-  context: 'workspace' | 'shared' = 'workspace';
+  isShared = false;
 
 
   constructor(private folderService: FolderService,
     private userService: UserService,
     private roleService : RoleService,
+    private sharedService : SharedService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    protected router: Router) { }
+    protected router: Router,) { }
 
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.context = params['context'] || 'workspace';
-      if (this.context === 'shared') 
-      {
-        this.context = 'shared';
-        this.fetchSharedFolders();
-      } 
-      else
-       {
 
-        this.context = 'workspace';
-        this.userService.getUserId().subscribe(userId => {
-          if (userId !== null) {
-            this.fetchFolders(userId);
-          }
-        });
-      }
+    this.roleService.isAdminObservable().subscribe(isAdmin =>{
+      this.isAdmin = isAdmin
+    });
+    
+    this.sharedService.getIsShared().subscribe(isShared =>{
+      this.isShared =isShared;
+
+      if (this.isShared) 
+        {
+          this.fetchSharedFolders();
+        } 
+        else
+         {
+
+            this.userService.getUserId().subscribe(userId => {
+            if (userId !== null) 
+            {
+              this.fetchFolders(userId);
+            }
+          });
+        }
+
     });
 
-    // Set admin status
-    this.isAdmin = this.roleService.isAdmin();
+ 
+
+    // this.isAdmin = this.roleService.isAdmin();
   }
 
-  fetchFolders(userId: number | null): void {
+  fetchFolders(userId: number | null): void
+   {
     if (userId !== null) {
       this.folderService.getAllFoldersByUserId(userId).subscribe(folders => {
         this.foldersData = folders;
-        // console.log("Parent component foldersData: ", this.foldersData);
       });
     }
     else {
       console.error('User ID is null. Unable to fetch folders.');
     }
 
-
   }
 
-  fetchSharedFolders() {
+  fetchSharedFolders() 
+  {
     this.folderService.GetAllPublicFolders().subscribe(folders => {
       this.foldersData = folders.filter(folder => folder.IsPublic)
-      // console.log('Filtered public folders:', this.foldersData);
-      // console.log('Shared directories (public folders): ', this.foldersData);
     });
   }
 
 
-  openFolder(folderId: number): void {
+  openFolder(folderId: number): void
+  {
 
-    this.router.navigate(['/document', folderId], { queryParams: { context: this.context } });
+    this.router.navigate(['/document', folderId]);
+    // , { queryParams: { isShared: this.isShared } }
   }
 
-  openCreateFolderDialog(): void {
+  openCreateFolderDialog(): void 
+  {
     const dialogRef = this.dialog.open(CreateFolderDialogComponent, {
       width: '400px'
     });
@@ -105,7 +115,8 @@ export class FolderComponent implements OnInit {
   }
 
 
-  createFolder(folder: FolderModel) {
+  createFolder(folder: FolderModel) 
+  {
     this.folderService.CreateFolder(folder).subscribe(() => {
       this.userService.getUserId().subscribe(userId => {
         this.fetchFolders(userId);
@@ -116,7 +127,8 @@ export class FolderComponent implements OnInit {
 
 
 
-  openUpdateDialog(folderItem: Item): void {
+  openUpdateDialog(folderItem: Item): void
+   {
 
     const folder = folderItem as FolderModel
 
@@ -135,7 +147,8 @@ export class FolderComponent implements OnInit {
 
 
 
-  updateFolder(folder: FolderModel) {
+  updateFolder(folder: FolderModel) 
+  {
     // console.log('Updating folder with data:', folder); 
     this.folderService.UpdateFolder(folder).subscribe(() => {
       this.userService.getUserId().subscribe(userId => {
@@ -144,7 +157,8 @@ export class FolderComponent implements OnInit {
     });
   }
 
-  openDeleteDialog(folderId: number): void {
+  openDeleteDialog(folderId: number): void 
+  {
     const dialogRef = this.dialog.open(DeleteFolderDialogComponent, {
       width: '600px',
       height: '150px',
@@ -159,7 +173,8 @@ export class FolderComponent implements OnInit {
     )
   }
 
-  deleteFolder(folderId: number) {
+  deleteFolder(folderId: number)
+   {
     this.folderService.DeleteFolder(folderId).subscribe(() => {
       this.userService.getUserId().subscribe(userId => {
         this.fetchFolders(userId);

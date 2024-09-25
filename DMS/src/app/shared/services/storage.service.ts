@@ -13,7 +13,8 @@ export class StorageService {
   getItem(key : string) : string | null
   {
     const value = localStorage.getItem(key);
-    if (!value) {
+    if (!value)
+     {
       console.warn(`Missing value for key: ${key}`);
     }
     return value;

@@ -12,15 +12,17 @@ export class UserService {
 
   constructor(private singleton: SingeltonService) { }
 
-  fetchUserId(): Observable<any> {
+  fetchUserId(): Observable<any> 
+  {
     return this.singleton.getRequest("User/details");
   }
 
 
-  getUserId(): Observable<number | null> {
-    if (this.userIdSubject.getValue() !== null) {
+  getUserId(): Observable<number | null> 
+  {
+    if (this.userIdSubject.getValue() !== null)
+    {
       return this.userIdSubject.asObservable();
-
     }
     else {
       return new Observable(observer => {
@@ -36,7 +38,8 @@ export class UserService {
     }
   }
 
-  clearUserDetails(): void {
+  clearUserDetails(): void 
+  {
     this.userIdSubject.next(null);
   }
 
