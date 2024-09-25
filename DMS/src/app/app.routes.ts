@@ -13,7 +13,7 @@ import { UnauthorizedComponent } from './shared/components/unauthorized/unauthor
 export const routes: Routes = [
 
     {
-        path: 'folders',
+        path: 'workspace',
         component: FolderComponent,
         canActivate:[authGuard,roleGuard],
         data: { role: ['User' ,'Admin'] }

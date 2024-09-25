@@ -45,12 +45,13 @@ export class DocumentComponent implements OnInit {
       this.fetchDocumentsByFolderId(this.folderId);
     });
 
+    this.route.queryParams.subscribe(params => {
+      this.isShared = params['isShared'] === 'true'; 
+      console.log('Shared Status:', this.isShared);
+    });
+    
     this.roleService.isAdminObservable().subscribe(isAdmin =>{
       this.isAdmin = isAdmin
-    });
-
-    this.sharedService.getIsShared().subscribe(isShared =>{
-      this.isShared =isShared
     });
 
   }

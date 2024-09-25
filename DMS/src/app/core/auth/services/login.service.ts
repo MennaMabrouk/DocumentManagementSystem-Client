@@ -6,6 +6,7 @@ import { StorageService } from '../../../shared/services/storage.service';
 import { NavigationService } from '../../../shared/services/navigation.service';
 import { UserService } from '../../../features/user/user.service';
 import { RoleService } from '../../../shared/services/role.service';
+import { SharedService } from '../../../features/folder/shared.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class LoginService {
     private storage: StorageService,
     private navigationService: NavigationService,
     private userService: UserService,
-    private roleService : RoleService) {}
+    private roleService : RoleService,
+    private sharedService : SharedService) {}
 
 
   loginUser(loginUserDto: LoginUserModel): Observable<any> 
@@ -65,6 +67,7 @@ export class LoginService {
     // this.storage.removeItem('role');
     this.roleService.setRole(null);
     this.userService.clearUserDetails();
+    this.sharedService.setIsShared(false);
     this.navigationService.navigateTo('/login');
 
   }

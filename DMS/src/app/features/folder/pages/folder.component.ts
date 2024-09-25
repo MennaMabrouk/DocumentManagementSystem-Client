@@ -40,13 +40,17 @@ export class FolderComponent implements OnInit {
 
       this.roleService.isAdminObservable().subscribe(isAdmin => {
         this.isAdmin = isAdmin;
+        // console.log('Admin Status:', this.isAdmin); 
       });
     
       this.sharedService.getIsShared().subscribe(isShared => {
         this.isShared = isShared;
+        // console.log('Shared Status:', this.isShared); 
+        
     
-        if (this.isShared || this.isAdmin) 
+        if (this.isShared ) 
         {
+          // console.log('Fetching shared folders...'); 
           this.fetchSharedFolders();
         } 
         else 
@@ -56,14 +60,17 @@ export class FolderComponent implements OnInit {
             if (this.isAdmin && params['userId']) 
             {
               this.userId = +params['userId'];
+              // console.log('Admin fetching folders for userId:', this.userId); 
               this.fetchFolders(this.userId);
             } 
             else 
             {
               //user
               this.userService.getUserId().subscribe(userId => {
+                console.log('Fetched user ID', userId);
                 if (userId !== null) 
                 {
+                  // console.log('User fetching own folders for userId:', userId);
                   this.fetchFolders(userId);
                 }
               });
@@ -96,7 +103,8 @@ export class FolderComponent implements OnInit {
 
   openFolder(folderId: number): void
   {
-    this.router.navigate(['/document', folderId]);
+    // this.router.navigate(['/document', folderId]);
+    this.router.navigate(['/document', folderId], { queryParams: { isShared: this.isShared } });
   }
 
   openCreateFolderDialog(): void 

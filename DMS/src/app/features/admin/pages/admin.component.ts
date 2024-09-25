@@ -97,7 +97,7 @@ export class AdminComponent implements OnInit {
 
   viewUserFolders(userId : number) : void
   {
-    this.router.navigate(['/folders'], { queryParams: { userId: userId } });
+    this.router.navigate(['/workspace'], { queryParams: { userId: userId } });
 
   }
 
