@@ -9,9 +9,16 @@ import { DocumentComponent } from './features/document/pages/document.component'
 import { UserComponent } from './features/user/pages/user.component';
 import { AdminComponent } from './features/admin/pages/admin.component';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
+import { DashboardComponent } from './shared/components/dashboard/dashboard.component';
 
 export const routes: Routes = [
+    {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate:[authGuard,roleGuard],
+        data: { role: ['User' ,'Admin'] }
 
+    },
     {
         path: 'workspace',
         component: FolderComponent,

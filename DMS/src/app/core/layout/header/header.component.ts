@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
     //     this.setLinksByRole();
     //   }
     // });
-
+    console.log('hi');
   }
 
 

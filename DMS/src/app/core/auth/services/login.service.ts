@@ -7,6 +7,7 @@ import { NavigationService } from '../../../shared/services/navigation.service';
 import { UserService } from '../../../features/user/user.service';
 import { RoleService } from '../../../shared/services/role.service';
 import { SharedService } from '../../../features/folder/shared.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class LoginService {
     private navigationService: NavigationService,
     private userService: UserService,
     private roleService : RoleService,
-    private sharedService : SharedService) {}
+    private sharedService : SharedService,
+    private snackBar : MatSnackBar) {}
 
 
   loginUser(loginUserDto: LoginUserModel): Observable<any> 
@@ -32,8 +34,10 @@ export class LoginService {
         this.userService.getUserId().subscribe({
           next: (userId) => {
             console.log('Fetched User ID:', userId);
+
           },
           error: (err) => {
+            
             console.error('Failed to fetch user ID', err);
           }
         });
@@ -42,9 +46,9 @@ export class LoginService {
       }),
       catchError(error => {
         // Handle lockout 
-        if (error.status === 403)
-        {
-          const lockoutMessage = error.error || 'Your account is locked.';
+        if (error.status === 403) {
+          const lockoutMessage = error.error?.message || 'Your account is locked.';
+          this.snackBar.open(lockoutMessage, 'Close', { duration: 2000 });
           return throwError(() => new Error(lockoutMessage)); 
         }
         return throwError(() => new Error('Login failed, please try again.'));
