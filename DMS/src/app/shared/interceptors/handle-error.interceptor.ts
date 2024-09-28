@@ -13,12 +13,13 @@ export const handleErrorInterceptor: HttpInterceptorFn = (req, next) => {
       // Log the error using your handle error service
       handleErrorService.logErrorResponse(err);
       
-      // Check for 401 Unauthorized errors
+      // Handle specific errors like 401 Unauthorized
       if (err.status === 401) {
-        navigationService.navigateTo('/unauthorized'); // Redirect if unauthorized
+        navigationService.navigateTo('/unauthorized'); 
+        return throwError(() => err); 
       }
 
-      return throwError(() => err); // Rethrow the error for further handling
+      return throwError(() => err); 
     })
   );
 };
