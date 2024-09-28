@@ -55,13 +55,24 @@ export class AdminComponent implements OnInit {
     });
   }
 
-
   unlockUser(userId: number) {
-    this.adminService.unlockUser(userId).subscribe(() => {
-      this.snackBar.open('User unlocked successfully', 'Close', { duration: 2000 });
-      this.fetchAllUsers(); //for refreshing the table after
+    this.adminService.unlockUser(userId).subscribe({
+      next: () => {
+        this.snackBar.open('User unlocked successfully', 'Close', { duration: 2000 });
+        this.fetchAllUsers(); // Refresh the table after
+      },
+      error: (error) => {
+        if (error.status === 404) {
+          this.snackBar.open('User not found.', 'Close', { duration: 2000 });
+        } else if (error.status === 409) {
+          this.snackBar.open('User is not locked.', 'Close', { duration: 2000 });
+        } else {
+          this.snackBar.open('Failed to unlock the user.', 'Close', { duration: 2000 });
+        }
+      }
     });
   }
+
 
   ExtractKeyOfUsers(): void {
     if (this.usersData.length > 0) {
@@ -78,7 +89,7 @@ export class AdminComponent implements OnInit {
   openLockDialog(userId: number) {
     const dialogRef = this.dialog.open(LockDialogComponent, {
       width: '400px',
-      height:'325px'
+      height: '325px'
 
     });
 
