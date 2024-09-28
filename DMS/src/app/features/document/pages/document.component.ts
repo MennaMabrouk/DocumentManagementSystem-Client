@@ -33,55 +33,50 @@ export class DocumentComponent implements OnInit {
     private dialog: MatDialog,
     private route: ActivatedRoute,
     private roleService: RoleService,
-    private sharedService : SharedService,
+    private sharedService: SharedService,
     private sanitizer: DomSanitizer) { }
 
 
   ngOnInit(): void {
 
-     // getting folderId from route params
+    // getting folderId from route params
     this.route.params.subscribe(params => {
       this.folderId = +params['folderId']
       this.fetchDocumentsByFolderId(this.folderId);
     });
 
     this.route.queryParams.subscribe(params => {
-      this.isShared = params['isShared'] === 'true'; 
+      this.isShared = params['isShared'] === 'true';
       console.log('Shared Status:', this.isShared);
     });
-    
-    this.roleService.isAdminObservable().subscribe(isAdmin =>{
+
+    this.roleService.isAdminObservable().subscribe(isAdmin => {
       this.isAdmin = isAdmin
     });
 
   }
 
 
-  fetchDocumentsByFolderId(folderId: number | null): void 
-  {
-    if (folderId !== null)
-    {
+  fetchDocumentsByFolderId(folderId: number | null): void {
+    if (folderId !== null) {
       this.documentService.GetDocumentsByFolderId(folderId).subscribe(documents => {
         this.documentsData = documents;
       });
     }
-    else 
-    {
+    else {
       console.error('Folder ID is null. Unable to fetch documents.');
     }
 
   }
 
 
-  openCreateDocumentDialog(): void
-   {
+  openCreateDocumentDialog(): void {
     const dialogRef = this.dialog.open(CreateDocumentDialogComponent, {
       width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result)
-      {
+      if (result) {
         this.UploadDocument(result);
       }
     });
@@ -89,8 +84,7 @@ export class DocumentComponent implements OnInit {
   }
 
 
-  UploadDocument(formData: FormData)
-   {
+  UploadDocument(formData: FormData) {
     this.documentService.UploadDocument(formData).subscribe(() => {
       this.fetchDocumentsByFolderId(this.folderId)
     });
@@ -98,8 +92,7 @@ export class DocumentComponent implements OnInit {
 
 
 
-  openUpdateDialog(documentItem: Item): void 
-  {
+  openUpdateDialog(documentItem: Item): void {
 
     const document = documentItem as DocumentModel
 
@@ -109,8 +102,7 @@ export class DocumentComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(updatedDocument => {
-      if (updatedDocument)
-      {
+      if (updatedDocument) {
         this.updateDocument(updatedDocument);
       }
     });
@@ -119,8 +111,7 @@ export class DocumentComponent implements OnInit {
 
 
 
-  updateDocument(document: DocumentModel) 
-  {
+  updateDocument(document: DocumentModel) {
     this.documentService.UpdateDocument(document).subscribe(() => {
 
       this.fetchDocumentsByFolderId(this.folderId);
@@ -128,42 +119,40 @@ export class DocumentComponent implements OnInit {
     });
   }
 
-  openDeleteDialog(documentId: number): void 
-  {
+  openDeleteDialog(documentId: number): void {
     const dialogRef = this.dialog.open(DeleteDocumentDialogComponent, {
-      width: '600px',
-      height: '150px',
+      width: '450px',
+      height: '175px',
       data: { documentId }
     });
 
     dialogRef.afterClosed().subscribe(confirmed => {
-      if (confirmed) 
-      {
+      if (confirmed) {
         this.deleteDocument(documentId);
       }
     }
     )
   }
 
-  deleteDocument(documentId: number) 
-  {
+  deleteDocument(documentId: number) {
     this.documentService.DeleteDocument(documentId).subscribe(() => {
       this.fetchDocumentsByFolderId(this.folderId)
     });
   }
 
 
-  previewDocument(documentId: number): void 
-  {
+  previewDocument(documentId: number): void {
     this.documentService.PreviewDocument(documentId).subscribe((blob) => {
       const url = URL.createObjectURL(blob); //create URL from the blob
       this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     })
   }
 
-
-  downloadDocument(documentId: number): void 
-  {
+  closePreview(): void {
+    this.previewUrl = null;  // Set preview URL to null to close the iframe
+  }
+  
+  downloadDocument(documentId: number): void {
     this.documentService.GetDocumentById(documentId).subscribe((documentData: DocumentModel) => {
       const documentName = documentData.Name || 'document_' + documentId;
 

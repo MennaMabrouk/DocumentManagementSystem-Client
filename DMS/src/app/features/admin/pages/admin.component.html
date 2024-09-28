@@ -18,11 +18,11 @@
                     <mat-icon>folder_open</mat-icon>
                     <span class="tooltip-text">Workspace</span>
                 </button>
-                <button mat-icon-button color="primary" (click)="openLockDialog(row.Id)">
+                <button mat-icon-button color="warn" (click)="openLockDialog(row.Id)">
                     <mat-icon>lock</mat-icon>
                     <span class="tooltip-text">Lock</span>
                 </button>
-                <button mat-icon-button color="warn" (click)="unlockUser(row.Id)">
+                <button mat-icon-button  (click)="unlockUser(row.Id)">
                     <mat-icon>lock_open</mat-icon>
                     <span class="tooltip-text">Unlock</span>
                 </button>

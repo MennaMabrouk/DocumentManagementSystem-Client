@@ -16,8 +16,8 @@ import { MatIconModule } from '@angular/material/icon';
 export class ListingComponent implements OnChanges {
 
   @Input() data: Item[] = [];
-  @Input() isShared : boolean = false;
-  @Input() isAdmin  : boolean   = false;
+  @Input() isShared: boolean = false;
+  @Input() isAdmin: boolean = false;
   @Input() type: 'folder' | 'document' = 'folder';
 
   @Output() folderSelected = new EventEmitter<number>;
@@ -27,8 +27,8 @@ export class ListingComponent implements OnChanges {
 
   @Output() onUpdateDocument = new EventEmitter<Item>();
   @Output() onDeleteDocument = new EventEmitter<number>();
-  @Output() onPreviewDocument= new EventEmitter<number>();
-  @Output() onDownloadDocument= new EventEmitter<number>();
+  @Output() onPreviewDocument = new EventEmitter<number>();
+  @Output() onDownloadDocument = new EventEmitter<number>();
 
 
 
@@ -37,12 +37,10 @@ export class ListingComponent implements OnChanges {
   constructor(private keyValuePipe: KeyValuePipe) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log("The data:",this.data);
 
     if (changes['data'] && changes['data'].currentValue && this.data.length > 0) {
       const keyValueArray = this.keyValuePipe.transform(this.data[0]);
       this.displayedColumns = keyValueArray.map(entry => entry.key);
-      // console.log("The displayedcolumns (key):", this.displayedColumns);
     }
     else {
       this.displayedColumns = [];

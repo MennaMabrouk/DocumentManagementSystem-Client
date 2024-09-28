@@ -12,7 +12,7 @@ import { ValidationService } from '../../../../shared/services/validation.servic
 @Component({
   selector: 'app-create-folder-dialog',
   standalone: true,
-  imports: [    MatButtonModule,
+  imports: [MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
@@ -23,41 +23,36 @@ import { ValidationService } from '../../../../shared/services/validation.servic
   styleUrl: './create-folder-dialog.component.scss'
 })
 export class CreateFolderDialogComponent implements OnInit {
-  
-  folderForm! : FormGroup
-  
-  constructor(private formBuilder : FormBuilder,
-    private dialogRef : MatDialogRef<CreateFolderDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public folder : FolderModel,
-    private validationService : ValidationService) {}
+
+  folderForm!: FormGroup
+
+  constructor(private formBuilder: FormBuilder,
+    private dialogRef: MatDialogRef<CreateFolderDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public folder: FolderModel,
+    private validationService: ValidationService) { }
 
   ngOnInit(): void {
     this.folderForm = this.formBuilder.group({
-      Name: ['',[Validators.required,Validators.maxLength(50)]],
+      Name: ['', [Validators.required, Validators.maxLength(50)]],
       IsPublic: [false],
     });
   }
 
-  getErrorMessage(controlName: string): string 
-{
-  const control = this.folderForm.get(controlName);
-  if (control && control.invalid && control.touched)
-  {
-    return this.validationService.getValidationMessage(controlName, control);
-  }
-  
-  return '';
-}
+  getErrorMessage(controlName: string): string {
+    const control = this.folderForm.get(controlName);
+    if (control && control.invalid && control.touched) {
+      return this.validationService.getValidationMessage(controlName, control);
+    }
 
-onCreate() : void
-{
-  if(this.folderForm.valid)
-  {
-    this.dialogRef.close(this.folderForm.value);
+    return '';
   }
-}
-onCancel() : void
-{
-  this.dialogRef.close();
-}
+
+  onCreate(): void {
+    if (this.folderForm.valid) {
+      this.dialogRef.close(this.folderForm.value);
+    }
+  }
+  onCancel(): void {
+    this.dialogRef.close();
+  }
 }

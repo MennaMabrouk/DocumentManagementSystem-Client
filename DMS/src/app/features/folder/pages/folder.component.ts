@@ -24,64 +24,53 @@ export class FolderComponent implements OnInit {
   foldersData: FolderModel[] = [];
   isAdmin: boolean = false;
   isShared = false;
-  userId: number | null = null; 
+  userId: number | null = null;
 
 
   constructor(private folderService: FolderService,
     private userService: UserService,
-    private roleService : RoleService,
-    private sharedService : SharedService,
+    private roleService: RoleService,
+    private sharedService: SharedService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
     protected router: Router,) { }
 
 
-    ngOnInit(): void {
+  ngOnInit(): void {
 
-      this.roleService.isAdminObservable().subscribe(isAdmin => {
-        this.isAdmin = isAdmin;
-        // console.log('Admin Status:', this.isAdmin); 
-      });
-    
-      this.sharedService.getIsShared().subscribe(isShared => {
-        this.isShared = isShared;
-        // console.log('Shared Status:', this.isShared); 
-        
-    
-        if (this.isShared ) 
-        {
-          // console.log('Fetching shared folders...'); 
-          this.fetchSharedFolders();
-        } 
-        else 
-        {
-          //admin
-          this.route.queryParams.subscribe(params => {
-            if (this.isAdmin && params['userId']) 
-            {
-              this.userId = +params['userId'];
-              // console.log('Admin fetching folders for userId:', this.userId); 
-              this.fetchFolders(this.userId);
-            } 
-            else 
-            {
-              //user
-              this.userService.getUserId().subscribe(userId => {
-                console.log('Fetched user ID', userId);
-                if (userId !== null) 
-                {
-                  // console.log('User fetching own folders for userId:', userId);
-                  this.fetchFolders(userId);
-                }
-              });
-            }
-          });
-        }
-      });
-    }
-    
-  fetchFolders(userId: number | null): void
-   {
+    this.roleService.isAdminObservable().subscribe(isAdmin => {
+      this.isAdmin = isAdmin;
+    });
+
+    this.sharedService.getIsShared().subscribe(isShared => {
+      this.isShared = isShared;
+
+
+      if (this.isShared) {
+        this.fetchSharedFolders();
+      }
+      else {
+        //admin
+        this.route.queryParams.subscribe(params => {
+          if (this.isAdmin && params['userId']) {
+            this.userId = +params['userId'];
+            this.fetchFolders(this.userId);
+          }
+          else {
+            //user
+            this.userService.getUserId().subscribe(userId => {
+              console.log('Fetched user ID', userId);
+              if (userId !== null) {
+                this.fetchFolders(userId);
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+
+  fetchFolders(userId: number | null): void {
     if (userId !== null) {
       this.folderService.getAllFoldersByUserId(userId).subscribe(folders => {
         this.foldersData = folders;
@@ -93,24 +82,20 @@ export class FolderComponent implements OnInit {
 
   }
 
-  fetchSharedFolders() 
-  {
+  fetchSharedFolders() {
     this.folderService.GetAllPublicFolders().subscribe(folders => {
       this.foldersData = folders.filter(folder => folder.IsPublic)
     });
   }
 
 
-  openFolder(folderId: number): void
-  {
-    // this.router.navigate(['/document', folderId]);
+  openFolder(folderId: number): void {
     this.router.navigate(['/document', folderId], { queryParams: { isShared: this.isShared } });
   }
 
-  openCreateFolderDialog(): void 
-  {
+  openCreateFolderDialog(): void {
     const dialogRef = this.dialog.open(CreateFolderDialogComponent, {
-      width: '400px'
+      width: '500px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -128,8 +113,7 @@ export class FolderComponent implements OnInit {
   }
 
 
-  createFolder(folder: FolderModel) 
-  {
+  createFolder(folder: FolderModel) {
     this.folderService.CreateFolder(folder).subscribe(() => {
       this.userService.getUserId().subscribe(userId => {
         this.fetchFolders(userId);
@@ -140,13 +124,12 @@ export class FolderComponent implements OnInit {
 
 
 
-  openUpdateDialog(folderItem: Item): void
-   {
+  openUpdateDialog(folderItem: Item): void {
 
     const folder = folderItem as FolderModel
 
     const dialogRef = this.dialog.open(UpdateFolderDialogComponent, {
-      width: '400px',
+      width: '500px',
       data: folder
     });
 
@@ -160,9 +143,7 @@ export class FolderComponent implements OnInit {
 
 
 
-  updateFolder(folder: FolderModel) 
-  {
-    // console.log('Updating folder with data:', folder); 
+  updateFolder(folder: FolderModel) {
     this.folderService.UpdateFolder(folder).subscribe(() => {
       this.userService.getUserId().subscribe(userId => {
         this.fetchFolders(userId);
@@ -170,11 +151,10 @@ export class FolderComponent implements OnInit {
     });
   }
 
-  openDeleteDialog(folderId: number): void 
-  {
+  openDeleteDialog(folderId: number): void {
     const dialogRef = this.dialog.open(DeleteFolderDialogComponent, {
-      width: '600px',
-      height: '150px',
+      width: '450px',
+      height: '175px',
       data: { folderId }
     });
 
@@ -186,8 +166,7 @@ export class FolderComponent implements OnInit {
     )
   }
 
-  deleteFolder(folderId: number)
-   {
+  deleteFolder(folderId: number) {
     this.folderService.DeleteFolder(folderId).subscribe(() => {
       this.userService.getUserId().subscribe(userId => {
         this.fetchFolders(userId);

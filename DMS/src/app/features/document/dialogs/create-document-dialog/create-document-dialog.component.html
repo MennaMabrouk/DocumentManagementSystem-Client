@@ -1,8 +1,7 @@
-<h2 mat-dialog-title>Upload Documet</h2>
+<h2 mat-dialog-title>Upload Document</h2>
 
 <form [formGroup]="documentForm" (ngSubmit)="onCreate()">
     <div>
-        <!-- <label >Document</label> -->
         <input type="file" (change)="onFileSelected($event)" style="margin-bottom: 10px;" >
         @if (documentForm.get('File')?.hasError('required')){
         <span>{{ getErrorMessage('File') }}</span>

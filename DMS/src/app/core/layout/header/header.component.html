@@ -3,28 +3,25 @@
     <img src="assets/logo2.jpg" alt="Logo" />
   </div>
 
-  @if (links.length > 0) 
+  @if (links.length > 0)
   {
-    <nav mat-tab-nav-bar [tabPanel]="tabPanel">
-      @for (link of links; track link.label) 
-      {
-        @if (link.route)
-         {
-          <a mat-tab-link
-            (click)="HandleTabClick(link.route)"
-            [routerLink]="link.route"
-            routerLinkActive="active"
-            [active]="router.isActive(link.route, false)">
-            {{ link.label }}
-          </a>
-        } 
-        @else 
-        {
-          <a mat-tab-link (click)="logout()">{{ link.label }}</a> 
-        }
-      }
-    </nav>
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    @for (link of links; track link.label)
+    {
+    @if (link.route)
+    {
+    <a mat-tab-link (click)="HandleTabClick(link.route)" [routerLink]="link.route" routerLinkActive="active"
+      [active]="router.isActive(link.route, false)">
+      {{ link.label }}
+    </a>
+    }
+    @else
+    {
+    <a mat-tab-link (click)="logout()">{{ link.label }}</a>
+    }
+    }
+  </nav>
   }
-  
+
   <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 </header>

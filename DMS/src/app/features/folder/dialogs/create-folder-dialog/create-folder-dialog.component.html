@@ -5,12 +5,12 @@
     <mat-label>Folder Name</mat-label>
     <input matInput formControlName="Name" placeholder="Enter folder name">
     @if (folderForm.get('Name')?.hasError('required')||folderForm.get('Name')?.hasError('maxlength')){
-        <mat-error>{{ getErrorMessage('Name') }}</mat-error>
-      }     
+    <mat-error>{{ getErrorMessage('Name') }}</mat-error>
+    }
 
   </mat-form-field>
 
-  <mat-checkbox formControlName="IsPublic">Make Public</mat-checkbox>
+  <mat-checkbox formControlName="IsPublic">Public</mat-checkbox>
 
   <div mat-dialog-actions>
     <button mat-button type="submit" [disabled]="folderForm.invalid">Create</button>

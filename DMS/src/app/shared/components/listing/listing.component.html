@@ -39,12 +39,12 @@
   }
 
 
-  <ng-container matColumnDef="actions">
+  <ng-container matColumnDef="actions" >
     <th mat-header-cell *matHeaderCellDef> Actions </th>
     <td mat-cell *matCellDef="let row">
       @if(type === 'folder')
       {
-      <button mat-icon-button (click)="selectFolder(row['FolderId'])">
+      <button mat-icon-button color = "primary" (click)="selectFolder(row['FolderId'])">
         <mat-icon>folder_open</mat-icon>
         <span class="tooltip-text">Open</span>
       </button>
@@ -53,11 +53,11 @@
       @else if(type === 'document')
       {
       <ng-container>
-        <button mat-icon-button (click)="previewDocument(row['DocumentId'])">
+        <button mat-icon-button  color = "primary" (click)="previewDocument(row['DocumentId'])">
           <mat-icon>visibility</mat-icon>
           <span class="tooltip-text">Preview</span>
         </button>
-        <button mat-icon-button (click)="downloadDocument(row['DocumentId'])">
+        <button mat-icon-button color = "info" (click)="downloadDocument(row['DocumentId'])">
           <mat-icon>download</mat-icon>
           <span class="tooltip-text">Download</span>
         </button>
@@ -67,7 +67,7 @@
 
       @if(!isAdmin && !isShared)
       {
-      <button mat-icon-button (click)="triggerUpdate(row)">
+      <button mat-icon-button color = "accent" (click)="triggerUpdate(row)">
         <mat-icon>edit</mat-icon>
         <span class="tooltip-text">Edit</span>
       </button>

@@ -1,48 +1,32 @@
-// .form-row {
-//   display: flex;
-//   flex-direction: column;
-//   margin-bottom: 16px;
-  
-// }
+.form-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px; 
+}
 
-// .mat-form-field {
-//   width: 100%;
-//   margin-bottom: 16px;
-// }
+.form-row {
+    display: flex;
+    flex-direction: column; 
+    width: 100%;
+    margin-bottom: 16px; /* Space between rows */
+}
 
-// .form-body {
-//   max-width: 600px;
-//   margin: 0 auto;
-// }
+mat-form-field {
+    width: 100%; /* Ensure full width for input fields */
+    margin-bottom: 16px; /* Space between input fields */
+}
 
-// .form-actions {
-//   display: flex;
-//   justify-content: center;
-// }
 
-// .custom-radio-group-wrapper {
-//   display: flex;
-//   flex-direction: column;
-//   border: 1px solid rgba(0, 0, 0, 0.23);
-//   padding: 8px 16px;
-//   border-radius: 4px;
-//   width: 100%; /* Keep full width for container */
-// }
 
-// .gender-button-group {
-//   display: flex;
-//   justify-content: center;
-// }
+.form-actions {
+    display: flex;
+    justify-content: center; 
+    margin-top: 10px; 
+    width: 100%; 
+}
 
-// .gender-button-group mat-button-toggle {
-//   width: 100px; /* Set a fixed width for each toggle button */
-//   flex: none; /* Prevent stretching */
-// }
-
-// h2.text-center {
-//     font-family: 'Roboto', sans-serif;
-//     font-size: 24px;
-//     font-weight: 500;
-//     margin-bottom: 1.5rem;
-//     color: #333;
-// }
+button {
+    margin: 0 8px; 
+}

@@ -1,0 +1,56 @@
+.document-actions button {
+    background-color: #d81b60; 
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 13px; 
+    font-weight: 500; 
+  }
+  .preview-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999; 
+  }
+  
+  .preview-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 20px;
+    width: 80%;
+    max-width: 1200px;
+    height: auto;
+  }
+  
+  .iframe-container {
+    width: 100%;
+    height: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  .fullscreen-link {
+    display: block;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #1976d2;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  

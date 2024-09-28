@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { AdminService } from '../admin.service';
 import { UserModel } from '../../user/user.model';
 import { RoleService } from '../../../shared/services/role.service';
@@ -27,20 +27,18 @@ export class AdminComponent implements OnInit {
 
 
   constructor(private adminService: AdminService,
-    private roleService: RoleService,
     private keyValuePipe: KeyValuePipe,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router : Router) { }
+    private router: Router) { }
 
   ngOnInit(): void {
 
-      this.fetchAllUsers();
-    
+    this.fetchAllUsers();
+
   }
 
-  fetchAllUsers() 
-  {
+  fetchAllUsers() {
     this.adminService.getAllUsers().subscribe(users => {
       this.usersData = users
 
@@ -50,8 +48,7 @@ export class AdminComponent implements OnInit {
   }
 
 
-  lockUser(userId: number, lockTime: number, timeUnit: string)
-  {
+  lockUser(userId: number, lockTime: number, timeUnit: string) {
     this.adminService.lockUser(userId, lockTime, timeUnit).subscribe(() => {
       this.snackBar.open('User locked successfully', 'Close', { duration: 2000 });
       this.fetchAllUsers(); //for refreshing the table after
@@ -59,16 +56,14 @@ export class AdminComponent implements OnInit {
   }
 
 
-  unlockUser(userId: number) 
-  {
+  unlockUser(userId: number) {
     this.adminService.unlockUser(userId).subscribe(() => {
       this.snackBar.open('User unlocked successfully', 'Close', { duration: 2000 });
       this.fetchAllUsers(); //for refreshing the table after
     });
   }
 
-  ExtractKeyOfUsers(): void 
-  {
+  ExtractKeyOfUsers(): void {
     if (this.usersData.length > 0) {
       const keyValueArray = this.keyValuePipe.transform(this.usersData[0]);
       this.displayedColumns = keyValueArray.map(entry => entry.key)
@@ -80,23 +75,21 @@ export class AdminComponent implements OnInit {
 
   }
 
-  openLockDialog(userId: number) 
-  {
+  openLockDialog(userId: number) {
     const dialogRef = this.dialog.open(LockDialogComponent, {
-      width: '300px',
+      width: '400px',
+      height:'325px'
 
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) 
-      {
+      if (result) {
         this.lockUser(userId, result.lockTime, result.timeUnit);
       }
     });
   }
 
-  viewUserFolders(userId : number) : void
-  {
+  viewUserFolders(userId: number): void {
     this.router.navigate(['/workspace'], { queryParams: { userId: userId } });
 
   }

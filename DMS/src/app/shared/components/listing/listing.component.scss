@@ -1,0 +1,56 @@
+button {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    border-radius: 4px; 
+    padding: 4px 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
+    min-width: 70px;
+}
+
+button[color="primary"] {
+    background-color: #1976d2;
+    color: white;
+}
+
+button[color="primary"]:hover {
+    background-color: #1565c0;
+}
+
+button[color="accent"] {
+    background-color: #4caf50;
+    color: white;
+}
+
+button[color="accent"]:hover {
+    background-color: #34b95c;
+}
+
+button[color="warn"] {
+    background-color: #ff1744;
+    color: white;
+}
+
+button[color="warn"]:hover {
+    background-color: #d50000;
+}
+
+mat-icon {
+    margin-right: 3px;
+    font-size: 14px;
+}
+
+.actions-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4px;
+}
+
+td {
+    padding: 6px;
+    vertical-align: middle;
+}

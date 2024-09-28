@@ -1,10 +1,8 @@
-import { Component, inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router, RouterModule } from '@angular/router'
-import { StorageService } from '../../../shared/services/storage.service';
 import { NavigationService } from '../../../shared/services/navigation.service';
 import { LoginService } from '../../auth/services/login.service';
-import { UserService } from '../../../features/user/user.service';
 import { RoleService } from '../../../shared/services/role.service';
 import { SharedService } from '../../../features/folder/shared.service';
 
@@ -25,51 +23,37 @@ export class HeaderComponent implements OnInit {
     route?: string
   }[] = [];
 
-  // private userId: number | null = null;
-
-
-  constructor(private storage: StorageService,
+  constructor(
     protected router: Router,
     protected navigateService: NavigationService,
     private loginService: LoginService,
-    private roleService :RoleService,
-    private sharedService : SharedService) { }
+    private roleService: RoleService,
+    private sharedService: SharedService) { }
 
   ngOnInit(): void {
 
-    this.roleService.getRole().subscribe((role) =>{
+    this.roleService.getRole().subscribe((role) => {
       this.role = role;
       this.setLinksByRole();
       this.checkRoute();
     });
 
-    // this.userService.getUserId().subscribe(userId => {
-    //   this.userId = userId;
-    //   if (this.role && this.userId)
-    //   {
-    //     this.setLinksByRole();
-    //   }
-    // });
-    console.log('hi');
   }
 
 
 
-  setLinksByRole(): void 
-  {
+  setLinksByRole(): void {
     this.links = []; // to avoid duplicates
 
 
     // for specific role
-    if (this.role === 'User')
-    {
+    if (this.role === 'User') {
       this.links.push({
         label: 'My Workspace',
         route: '/workspace'
       });
     }
-    else if (this.role === 'Admin') 
-    {
+    else if (this.role === 'Admin') {
       this.links.push({
         label: 'Manage Users',
         route: '/get-all-users'
@@ -77,8 +61,7 @@ export class HeaderComponent implements OnInit {
     }
 
     //for all roles
-    if (this.role) 
-    {
+    if (this.role) {
       this.links.push({ label: 'Shared Directories', route: '/shared-directories' });
       this.links.push({ label: 'Profile', route: '/profile' });
       this.links.push({ label: 'Logout' });
@@ -86,39 +69,32 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  HandleTabClick(route : string)
-  {
-    if(route === '/shared-directories')
-    {
+  HandleTabClick(route: string) {
+    if (route === '/shared-directories') {
       this.sharedService.setIsShared(true);
     }
-    else if (route === '/workspace')
-    {
+    else if (route === '/workspace') {
       this.sharedService.setIsShared(false);
     }
-    
+
     this.navigateService.navigateTo(route);
   }
 
 
-  checkRoute(): void 
-  {
+  checkRoute(): void {
     this.router.events.subscribe(() => {
 
       const currentRoute = this.router.url;
-      if (currentRoute.includes('shared-directories')) 
-      {
-        this.sharedService.setIsShared(true); 
-      } 
-      else 
-      {
-        this.sharedService.setIsShared(false); 
+      if (currentRoute.includes('shared-directories')) {
+        this.sharedService.setIsShared(true);
+      }
+      else {
+        this.sharedService.setIsShared(false);
       }
     });
   }
 
-  logout(): void 
-  {
+  logout(): void {
     this.loginService.logout();
   }
 

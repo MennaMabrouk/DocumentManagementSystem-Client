@@ -6,11 +6,11 @@
   <mat-form-field appearance="fill">
     <mat-label>Lock Duration</mat-label>
     <input matInput formControlName="lockTime" placeholder="Enter duration" type="number" min="1">
-      <mat-icon matSuffix>schedule</mat-icon>
-      @if (adminForm.get('lockTime')?.hasError('min'))
-      {
-        <mat-error>{{ getErrorMessage('lockTime') }}</mat-error>
-      }     
+    <mat-icon matSuffix>schedule</mat-icon>
+    @if (adminForm.get('lockTime')?.hasError('min'))
+    {
+    <mat-error>{{ getErrorMessage('lockTime') }}</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="fill">
