@@ -1,13 +1,15 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { Item } from '../../item.interface';
 import { CommonModule, KeyValuePipe } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 
 @Component({
   selector: 'app-listing',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatIconModule
+  imports: [CommonModule, MatTableModule, MatIconModule,MatFormFieldModule
   ],
   templateUrl: './listing.component.html',
   styleUrl: './listing.component.scss',
@@ -33,6 +35,8 @@ export class ListingComponent implements OnChanges {
 
 
   displayedColumns: string[] = [];
+  dataSource!: MatTableDataSource<Item>;
+
 
   constructor(private keyValuePipe: KeyValuePipe) { }
 
@@ -41,6 +45,7 @@ export class ListingComponent implements OnChanges {
     if (changes['data'] && changes['data'].currentValue && this.data.length > 0) {
       const keyValueArray = this.keyValuePipe.transform(this.data[0]);
       this.displayedColumns = keyValueArray.map(entry => entry.key);
+      this.dataSource = new MatTableDataSource(this.data);
     }
     else {
       this.displayedColumns = [];
@@ -83,6 +88,13 @@ export class ListingComponent implements OnChanges {
   downloadDocument(documentId: number): void {
     this.onDownloadDocument.emit(documentId); //for document id 
   }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = filterValue; 
+  }
+
+ 
 }
 
 

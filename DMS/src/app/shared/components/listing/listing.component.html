@@ -1,4 +1,8 @@
-<table mat-table [dataSource]="data" class="mat-elevation-z8">
+<div class="search-container">
+  <input placeholder="Search" (keyup)="applyFilter($event)" />
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
   @for (column of displayedColumns; track column) {
   <ng-container [matColumnDef]="column">

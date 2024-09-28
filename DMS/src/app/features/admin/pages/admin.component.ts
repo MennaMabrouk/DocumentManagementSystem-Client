@@ -1,8 +1,7 @@
 import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { AdminService } from '../admin.service';
 import { UserModel } from '../../user/user.model';
-import { RoleService } from '../../../shared/services/role.service';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource,MatTableModule } from '@angular/material/table';
 import { CommonModule, KeyValuePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
@@ -25,6 +24,8 @@ export class AdminComponent implements OnInit {
   usersData: UserModel[] = [];
   displayedColumns: string[] = [];
 
+  usersDataSource!: MatTableDataSource<UserModel>; 
+ 
 
   constructor(private adminService: AdminService,
     private keyValuePipe: KeyValuePipe,
@@ -41,6 +42,7 @@ export class AdminComponent implements OnInit {
   fetchAllUsers() {
     this.adminService.getAllUsers().subscribe(users => {
       this.usersData = users
+      this.usersDataSource = new MatTableDataSource(this.usersData);
 
       this.ExtractKeyOfUsers(); // Extract the columns for the table
 
@@ -105,4 +107,9 @@ export class AdminComponent implements OnInit {
 
   }
 
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.usersDataSource.filter = filterValue; 
+  }
 }
