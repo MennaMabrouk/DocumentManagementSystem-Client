@@ -10,7 +10,7 @@ import { DeleteDocumentDialogComponent } from '../dialogs/delete-document-dialog
 import { CreateDocumentDialogComponent } from '../dialogs/create-document-dialog/create-document-dialog.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { RoleService } from '../../../shared/services/role.service';
-import { SharedService } from '../../folder/shared.service';
+import { PaginationConfig } from '../../../shared/Enums/Pagination.enum';
 
 @Component({
   selector: 'app-document',
@@ -26,6 +26,16 @@ export class DocumentComponent implements OnInit {
   isAdmin: boolean = false;
   isShared: boolean = false;
 
+  // Using enum values
+  pageSize = PaginationConfig.DefaultPageSize;
+  pageNumber = PaginationConfig.DefaultPageNumber;
+
+  disableNextButton: boolean = false;
+
+  paginationConfig = PaginationConfig;
+
+
+
   folderId: number | null = null;
   previewUrl: SafeResourceUrl | null = null;
 
@@ -33,7 +43,6 @@ export class DocumentComponent implements OnInit {
     private dialog: MatDialog,
     private route: ActivatedRoute,
     private roleService: RoleService,
-    private sharedService: SharedService,
     private sanitizer: DomSanitizer) { }
 
 
@@ -42,12 +51,12 @@ export class DocumentComponent implements OnInit {
     // getting folderId from route params
     this.route.params.subscribe(params => {
       this.folderId = +params['folderId']
-      this.fetchDocumentsByFolderId(this.folderId);
+      this.fetchDocumentsByFolderId(this.folderId,this.pageNumber,this.pageSize);
     });
 
     this.route.queryParams.subscribe(params => {
       this.isShared = params['isShared'] === 'true';
-      console.log('Shared Status:', this.isShared);
+      // console.log('Shared Status:', this.isShared);
     });
 
     this.roleService.isAdminObservable().subscribe(isAdmin => {
@@ -57,10 +66,11 @@ export class DocumentComponent implements OnInit {
   }
 
 
-  fetchDocumentsByFolderId(folderId: number | null): void {
+  fetchDocumentsByFolderId(folderId: number | null, pageNumber : number, pageSize : number): void {
     if (folderId !== null) {
-      this.documentService.GetDocumentsByFolderId(folderId).subscribe(documents => {
-        this.documentsData = documents;
+      this.documentService.GetDocumentsByFolderId(folderId,pageNumber,pageSize).subscribe(documents => {
+        this.documentsData = documents.Items;
+        this.disableNextButton = this.documentsData.length < this.pageSize;
       });
     }
     else {
@@ -86,7 +96,7 @@ export class DocumentComponent implements OnInit {
 
   UploadDocument(formData: FormData) {
     this.documentService.UploadDocument(formData).subscribe(() => {
-      this.fetchDocumentsByFolderId(this.folderId)
+      this.fetchDocumentsByFolderId(this.folderId,this.pageNumber,this.pageSize)
     });
   }
 
@@ -114,7 +124,7 @@ export class DocumentComponent implements OnInit {
   updateDocument(document: DocumentModel) {
     this.documentService.UpdateDocument(document).subscribe(() => {
 
-      this.fetchDocumentsByFolderId(this.folderId);
+      this.fetchDocumentsByFolderId(this.folderId,this.pageNumber,this.pageSize);
 
     });
   }
@@ -136,7 +146,7 @@ export class DocumentComponent implements OnInit {
 
   deleteDocument(documentId: number) {
     this.documentService.DeleteDocument(documentId).subscribe(() => {
-      this.fetchDocumentsByFolderId(this.folderId)
+      this.fetchDocumentsByFolderId(this.folderId,this.pageNumber,this.pageSize)
     });
   }
 
@@ -151,7 +161,7 @@ export class DocumentComponent implements OnInit {
   closePreview(): void {
     this.previewUrl = null;  // Set preview URL to null to close the iframe
   }
-  
+
   downloadDocument(documentId: number): void {
     this.documentService.GetDocumentById(documentId).subscribe((documentData: DocumentModel) => {
       const documentName = documentData.Name || 'document_' + documentId;
@@ -165,6 +175,20 @@ export class DocumentComponent implements OnInit {
         window.URL.revokeObjectURL(url);
       });
     });
+  }
+
+  goToPreviousPage(): void {
+    if (this.pageNumber > 1) {
+      this.pageNumber--;
+      this.fetchDocumentsByFolderId(this.folderId, this.pageNumber, this.pageSize);
+    }
+  }
+  
+  goToNextPage(): void {
+    if (!this.disableNextButton) {
+      this.pageNumber++;
+      this.fetchDocumentsByFolderId(this.folderId, this.pageNumber, this.pageSize);
+    }
   }
 }
 

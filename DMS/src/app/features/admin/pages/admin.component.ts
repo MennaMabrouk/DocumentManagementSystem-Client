@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import { AdminService } from '../admin.service';
 import { UserModel } from '../../user/user.model';
 import { MatTableDataSource,MatTableModule } from '@angular/material/table';
@@ -8,6 +8,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { LockDialogComponent } from '../dialog/lock-dialog/lock-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginationConfig } from '../../../shared/Enums/Pagination.enum';
+
+
+
 
 
 @Component({
@@ -24,7 +29,17 @@ export class AdminComponent implements OnInit {
   usersData: UserModel[] = [];
   displayedColumns: string[] = [];
 
-  usersDataSource!: MatTableDataSource<UserModel>; 
+  usersDataSource = new MatTableDataSource<UserModel>([]);
+
+    // Using enum values
+    pageSize = PaginationConfig.DefaultPageSize;
+    pageNumber = PaginationConfig.DefaultPageNumber;
+
+    disableNextButton: boolean = false; 
+
+    paginationConfig = PaginationConfig;
+
+
  
 
   constructor(private adminService: AdminService,
@@ -33,27 +48,33 @@ export class AdminComponent implements OnInit {
     private snackBar: MatSnackBar,
     private router: Router) { }
 
-  ngOnInit(): void {
 
-    this.fetchAllUsers();
 
-  }
+  ngOnInit(): void
+    {
+    this.fetchAllUsers(this.pageNumber, this.pageSize); 
+    } 
 
-  fetchAllUsers() {
-    this.adminService.getAllUsers().subscribe(users => {
-      this.usersData = users
-      this.usersDataSource = new MatTableDataSource(this.usersData);
 
-      this.ExtractKeyOfUsers(); // Extract the columns for the table
+  fetchAllUsers(pageNumber: number, pageSize: number): void {
+    this.adminService.getAllUsers(pageNumber, pageSize).subscribe((result) => {
 
+      this.usersData = result.Items;
+      this.usersDataSource.data = this.usersData;
+
+      this.disableNextButton = this.usersData.length < this.pageSize;
+
+
+      this.ExtractKeyOfUsers();
+
+      
     });
   }
-
 
   lockUser(userId: number, lockTime: number, timeUnit: string) {
     this.adminService.lockUser(userId, lockTime, timeUnit).subscribe(() => {
       this.snackBar.open('User locked successfully', 'Close', { duration: 2000 });
-      this.fetchAllUsers(); //for refreshing the table after
+      this.fetchAllUsers(this.pageNumber, this.pageSize); 
     });
   }
 
@@ -61,7 +82,7 @@ export class AdminComponent implements OnInit {
     this.adminService.unlockUser(userId).subscribe({
       next: () => {
         this.snackBar.open('User unlocked successfully', 'Close', { duration: 2000 });
-        this.fetchAllUsers(); // Refresh the table after
+        this.fetchAllUsers(this.pageNumber, this.pageSize); // refresh the table after
       },
       error: (error) => {
         if (error.status === 404) {
@@ -77,16 +98,16 @@ export class AdminComponent implements OnInit {
 
 
   ExtractKeyOfUsers(): void {
-    if (this.usersData.length > 0) {
+    // Check if usersData exists and is an array
+    if (Array.isArray(this.usersData) && this.usersData.length > 0) {
       const keyValueArray = this.keyValuePipe.transform(this.usersData[0]);
       this.displayedColumns = keyValueArray.map(entry => entry.key)
         .filter(key => key !== 'WorkspaceName');
+    } else {
+      this.displayedColumns = []; // Reset to empty if usersData is undefined or empty
     }
-    else {
-      this.displayedColumns = [];
-    }
-
   }
+  
 
   openLockDialog(userId: number) {
     const dialogRef = this.dialog.open(LockDialogComponent, {
@@ -111,5 +132,23 @@ export class AdminComponent implements OnInit {
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.usersDataSource.filter = filterValue; 
+  }
+
+  goToPreviousPage() : void
+  {
+    if(this.pageNumber>1)
+    {
+      this.pageNumber--;
+      this.fetchAllUsers(this.pageNumber,this.pageSize);
+    }
+  }
+
+  goToNextPage(): void 
+  {
+    if (!this.disableNextButton) 
+    {
+      this.pageNumber++;
+      this.fetchAllUsers(this.pageNumber, this.pageSize);  
+    }
   }
 }

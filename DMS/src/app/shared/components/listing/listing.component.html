@@ -90,3 +90,13 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns.concat(['actions'])"></tr>
 
 </table>
+
+<div class="pagination-controls">
+  <button class="pagination-button prev" (click)="previousPage()" [disabled]="pageNumber <= 1">
+    Previous
+  </button>
+  <span>Page {{ pageNumber }}</span>
+  <button class="pagination-button next" (click)="nextPage()" [disabled]="disableNextButton">
+    Next
+  </button>
+</div>

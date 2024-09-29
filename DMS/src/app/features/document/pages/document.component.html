@@ -10,10 +10,16 @@
 [isAdmin]="isAdmin"
 [isShared]="isShared"
 [type]="'document'"
-  (onUpdateDocument)="openUpdateDialog($event)"
-  (onDeleteDocument)="openDeleteDialog($event)"
-  (onPreviewDocument)="previewDocument($event)" 
-  (onDownloadDocument)="downloadDocument($event)">
+[pageNumber]="pageNumber"
+[pageSize]="pageSize"
+[disableNextButton]="disableNextButton"
+(onUpdateDocument)="openUpdateDialog($event)"
+(onDeleteDocument)="openDeleteDialog($event)"
+(onPreviewDocument)="previewDocument($event)" 
+(onDownloadDocument)="downloadDocument($event)"
+(onPreviousPage)="goToPreviousPage()"
+(onNextPage)="goToNextPage()">
+
 </app-listing>
 
 @if(previewUrl)

@@ -1,13 +1,11 @@
 import { CanActivateFn } from '@angular/router';
 import { StorageService } from '../../../shared/services/storage.service';
 import { inject } from '@angular/core';
-import { NavigationService } from '../../../shared/services/navigation.service';
 import { LoginService } from '../services/login.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
 
   const storageService = inject(StorageService);
-  const navigationService = inject(NavigationService);
   const loginService = inject(LoginService);
 
   const token = storageService.getItem('token');

@@ -33,7 +33,7 @@ export class LoginService {
 
         this.userService.getUserId().subscribe({
           next: (userId) => {
-            console.log('Fetched User ID:', userId);
+            // console.log('Fetched User ID:', userId);
 
           },
           error: (err) => {

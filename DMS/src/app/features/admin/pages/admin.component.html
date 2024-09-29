@@ -33,10 +33,21 @@
             </td>
         </ng-container>
 
+
         <!-- Header Row Definition -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns.concat(['actions'])"></tr>
 
         <!-- Data Row Definition -->
         <tr mat-row *matRowDef="let row; columns: displayedColumns.concat(['actions'])"></tr>
     </table>
+
+    <div class="pagination-controls">
+        <button class="pagination-button prev" (click)="goToPreviousPage()" [disabled]="pageNumber <= 1">
+            Previous
+        </button>
+        <span>Page {{ pageNumber }}</span>
+        <button class="pagination-button next" (click)="goToNextPage()" [disabled]="disableNextButton">
+            Next
+        </button>
+    </div>
 </div>

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { SingeltonService } from '../../shared/services/singelton.service';
 import { Observable } from 'rxjs';
 import { DocumentModel } from './document.model';
+import { PaginationConfig } from '../../shared/Enums/Pagination.enum';
+import { PaginatedResult } from '../../shared/PaginatedResult';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +12,13 @@ export class DocumentService {
 
   constructor(private singleton :SingeltonService) { }
 
-GetDocumentsByFolderId(folderId : number) : Observable<DocumentModel[]>
+GetDocumentsByFolderId(folderId : number,
+                pageNumber: number = PaginationConfig.DefaultPageNumber,
+                pageSize: number = PaginationConfig.DefaultPageSize)
+                 : Observable<PaginatedResult<DocumentModel>>
 {
-  return this.singleton.getRequest<DocumentModel[]>(`Document/documents/${folderId}`)
+  const params = `?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+  return this.singleton.getRequest<PaginatedResult<DocumentModel>>(`Document/documents/${folderId}${params}`)
 }
 
 GetDocumentById(documentId : number) : Observable<DocumentModel>

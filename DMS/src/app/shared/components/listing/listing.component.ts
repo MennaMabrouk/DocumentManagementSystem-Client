@@ -1,15 +1,16 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { Item } from '../../item.interface';
 import { CommonModule, KeyValuePipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { PaginationConfig } from '../../Enums/Pagination.enum';
 
 
 @Component({
   selector: 'app-listing',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatIconModule,MatFormFieldModule
+  imports: [CommonModule, MatTableModule, MatIconModule, MatFormFieldModule
   ],
   templateUrl: './listing.component.html',
   styleUrl: './listing.component.scss',
@@ -22,6 +23,10 @@ export class ListingComponent implements OnChanges {
   @Input() isAdmin: boolean = false;
   @Input() type: 'folder' | 'document' = 'folder';
 
+  @Input() pageNumber: number = PaginationConfig.DefaultPageNumber;
+  @Input() pageSize: number = PaginationConfig.DefaultPageSize;
+  @Input() disableNextButton: boolean = false;
+
   @Output() folderSelected = new EventEmitter<number>;
 
   @Output() onUpdateFolder = new EventEmitter<Item>();
@@ -32,10 +37,15 @@ export class ListingComponent implements OnChanges {
   @Output() onPreviewDocument = new EventEmitter<number>();
   @Output() onDownloadDocument = new EventEmitter<number>();
 
+  @Output() onPreviousPage = new EventEmitter<void>();
+  @Output() onNextPage = new EventEmitter<void>();
+
+
 
 
   displayedColumns: string[] = [];
   dataSource!: MatTableDataSource<Item>;
+
 
 
   constructor(private keyValuePipe: KeyValuePipe) { }
@@ -91,10 +101,17 @@ export class ListingComponent implements OnChanges {
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.dataSource.filter = filterValue; 
+    this.dataSource.filter = filterValue;
   }
 
- 
+
+  previousPage(): void {
+    this.onPreviousPage.emit();
+  }
+
+  nextPage(): void {
+    this.onNextPage.emit();
+  }
 }
 
 

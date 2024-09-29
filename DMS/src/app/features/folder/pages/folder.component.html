@@ -11,6 +11,11 @@
 [isAdmin] = "isAdmin"
 [isShared] = "isShared"
 [type] = "'folder'"
+[pageNumber]="pageNumber"
+[pageSize]="pageSize"
+[disableNextButton]="disableNextButton"
 (folderSelected)="openFolder($event)"
 (onUpdateFolder)="openUpdateDialog($event)"
-(onDeleteFolder)="openDeleteDialog($event)" ></app-listing>
+(onDeleteFolder)="openDeleteDialog($event)"
+(onPreviousPage)="goToPreviousPage()"
+(onNextPage)="goToNextPage()" ></app-listing>

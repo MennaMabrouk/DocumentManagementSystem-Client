@@ -11,6 +11,7 @@ import { CreateFolderDialogComponent } from '../dialogs/create-folder-dialog/cre
 import { Item } from '../../../shared/item.interface';
 import { RoleService } from '../../../shared/services/role.service';
 import { SharedService } from '../shared.service';
+import { PaginationConfig } from '../../../shared/Enums/Pagination.enum';
 
 @Component({
   selector: 'app-folder',
@@ -25,6 +26,17 @@ export class FolderComponent implements OnInit {
   isAdmin: boolean = false;
   isShared = false;
   userId: number | null = null;
+
+
+  // Using enum values
+  pageSize = PaginationConfig.DefaultPageSize;
+  pageNumber = PaginationConfig.DefaultPageNumber;
+
+  disableNextButton: boolean = false;
+
+  paginationConfig = PaginationConfig;
+
+
 
 
   constructor(private folderService: FolderService,
@@ -47,21 +59,21 @@ export class FolderComponent implements OnInit {
 
 
       if (this.isShared) {
-        this.fetchSharedFolders();
+        this.fetchSharedFolders(this.pageNumber, this.pageSize);
       }
       else {
         //admin
         this.route.queryParams.subscribe(params => {
           if (this.isAdmin && params['userId']) {
             this.userId = +params['userId'];
-            this.fetchFolders(this.userId);
+            this.fetchFolders(this.userId, this.pageNumber, this.pageSize);
           }
           else {
             //user
             this.userService.getUserId().subscribe(userId => {
               console.log('Fetched user ID', userId);
               if (userId !== null) {
-                this.fetchFolders(userId);
+                this.fetchFolders(userId, this.pageNumber, this.pageSize);
               }
             });
           }
@@ -70,10 +82,11 @@ export class FolderComponent implements OnInit {
     });
   }
 
-  fetchFolders(userId: number | null): void {
+  fetchFolders(userId: number | null, pageNumber: number, pageSize: number): void {
     if (userId !== null) {
-      this.folderService.getAllFoldersByUserId(userId).subscribe(folders => {
-        this.foldersData = folders;
+      this.folderService.getAllFoldersByUserId(userId, pageNumber, pageSize).subscribe(folders => {
+        this.foldersData = folders.Items;
+        this.disableNextButton = this.foldersData.length < this.pageSize;
       });
     }
     else {
@@ -82,9 +95,10 @@ export class FolderComponent implements OnInit {
 
   }
 
-  fetchSharedFolders() {
-    this.folderService.GetAllPublicFolders().subscribe(folders => {
-      this.foldersData = folders.filter(folder => folder.IsPublic)
+  fetchSharedFolders(pageNumber: number, pageSize: number) {
+    this.folderService.GetAllPublicFolders(pageNumber, pageSize).subscribe(folders => {
+      this.foldersData = folders.Items
+      this.disableNextButton = this.foldersData.length < this.pageSize;
     });
   }
 
@@ -116,7 +130,7 @@ export class FolderComponent implements OnInit {
   createFolder(folder: FolderModel) {
     this.folderService.CreateFolder(folder).subscribe(() => {
       this.userService.getUserId().subscribe(userId => {
-        this.fetchFolders(userId);
+        this.fetchFolders(userId, this.pageNumber, this.pageSize);
       });
     });
 
@@ -146,7 +160,7 @@ export class FolderComponent implements OnInit {
   updateFolder(folder: FolderModel) {
     this.folderService.UpdateFolder(folder).subscribe(() => {
       this.userService.getUserId().subscribe(userId => {
-        this.fetchFolders(userId);
+        this.fetchFolders(userId, this.pageNumber, this.pageSize);
       });
     });
   }
@@ -169,9 +183,36 @@ export class FolderComponent implements OnInit {
   deleteFolder(folderId: number) {
     this.folderService.DeleteFolder(folderId).subscribe(() => {
       this.userService.getUserId().subscribe(userId => {
-        this.fetchFolders(userId);
+        this.fetchFolders(userId, this.pageNumber, this.pageSize);
       });
     });
   }
+
+  goToPreviousPage(): void {
+    if (this.pageNumber > 1) {
+      this.pageNumber--;
+      if (this.isShared) {
+        this.fetchSharedFolders(this.pageNumber, this.pageSize);
+      } else {
+        this.userService.getUserId().subscribe(userId => {
+          this.fetchFolders(userId, this.pageNumber, this.pageSize);
+        });
+      }
+    }
+  }
+
+  goToNextPage(): void {
+    if (!this.disableNextButton) {
+      this.pageNumber++;
+      if (this.isShared) {
+        this.fetchSharedFolders(this.pageNumber, this.pageSize);
+      } else {
+        this.userService.getUserId().subscribe(userId => {
+          this.fetchFolders(userId, this.pageNumber, this.pageSize);
+        });
+      }
+    }
+  }
+
 
 }
