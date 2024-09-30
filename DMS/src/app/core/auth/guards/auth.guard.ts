@@ -1,38 +1,26 @@
 import { CanActivateFn } from '@angular/router';
-import { StorageService } from '../../../shared/services/storage.service';
 import { inject } from '@angular/core';
 import { LoginService } from '../services/login.service';
+import { NavigationService } from '../../../shared/services/navigation.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (route, state): Observable<boolean> => {
 
-  const storageService = inject(StorageService);
   const loginService = inject(LoginService);
+  const navigationService = inject(NavigationService);
 
-  const token = storageService.getItem('token');
-  const expiration = storageService.getItem('expiration');
-
-  if(token && expiration)
-  {
-    const expirationDate = new Date(expiration);
-    const currentDate = new Date();
-
-    if(currentDate < expirationDate)
-      return true;
-
-    else
-    {
-      loginService.logout();
-      return false;
-    }
-  }
-
-  else
-  {
-      loginService.logout();
-      return false; // No token or expired
-  }
-
-
-
+  return loginService.getLoginStatus().pipe(
+    map(isLoggedIn => {
+      if (isLoggedIn) 
+      {
+        return true;
+      } 
+      else 
+      {
+        navigationService.navigateTo('/login');
+        return false;
+      }
+    })
+  );
 };
-

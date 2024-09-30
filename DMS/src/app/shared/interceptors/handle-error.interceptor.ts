@@ -5,6 +5,7 @@ import { HandleErrorService } from '../services/handle-error.service';
 import { NavigationService } from '../services/navigation.service';
 
 export const handleErrorInterceptor: HttpInterceptorFn = (req, next) => {
+  
   const handleErrorService = inject(HandleErrorService);
   const navigationService = inject(NavigationService);
 

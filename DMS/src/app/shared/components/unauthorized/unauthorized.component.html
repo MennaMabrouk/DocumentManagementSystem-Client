@@ -5,7 +5,7 @@
         <p>You are not authorized to view this page!</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button color="primary" [routerLink]="['/login']">Go to Login</button>
+        <button mat-raised-button color="primary" (click) = "returnPoint()">Return</button>
       </mat-card-actions>
     </mat-card>
   </div>
