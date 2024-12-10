@@ -15,6 +15,7 @@
   export class LoginService {
 
     private loginStatusSubject: BehaviorSubject<boolean>;
+    private isLoggingOut = false;
 
     constructor(private singelton: SingeltonService,
       private storage: StorageService,
@@ -63,6 +64,7 @@
         map((response) => {
           this.storeToken(response.token, response.expiration);
           this.roleService.setRole(response.role);
+          console.log('Role set:', response.role);
           this.setLoginStatus(true);
 
 
@@ -96,11 +98,17 @@
       this.storage.setItem('token', token);
       this.storage.setItem('expiration', expiration);
       // this.storage.setItem('role', role);
+      console.log('Token stored:', token); 
       this.setLoginStatus(true);
+    }
+
+    isLogoutInProgress(): boolean {
+      return this.isLoggingOut;
     }
 
     logout(): void 
     {
+      this.isLoggingOut = true;
 
       this.storage.removeItem('token');
       this.storage.removeItem('expiration');
@@ -113,6 +121,10 @@
 
       this.navigationService.navigateTo('/login');
 
+          // Reset the logout flag after the process is complete
+    setTimeout(() => {
+      this.isLoggingOut = false;
+    }, 0);
     }
 
 

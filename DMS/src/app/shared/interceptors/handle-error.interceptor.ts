@@ -3,24 +3,27 @@ import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { HandleErrorService } from '../services/handle-error.service';
 import { NavigationService } from '../services/navigation.service';
+import { LoginService } from '../../core/auth/services/login.service';
 
 export const handleErrorInterceptor: HttpInterceptorFn = (req, next) => {
-  
   const handleErrorService = inject(HandleErrorService);
   const navigationService = inject(NavigationService);
+  const loginService = inject(LoginService); 
 
   return next(req).pipe(
-    catchError(err => {
-      // Log the error using your handle error service
+    catchError((err) => {
       handleErrorService.logErrorResponse(err);
-      
+
       // Handle specific errors like 401 Unauthorized
       if (err.status === 401) {
-        navigationService.navigateTo('/unauthorized'); 
-        return throwError(() => err); 
+        if (loginService.isLogoutInProgress()) {
+        } else {
+          navigationService.navigateTo('/login'); // Redirect to login
+        }
       }
 
-      return throwError(() => err); 
+      // Pass the error to the caller
+      return throwError(() => err);
     })
   );
 };

@@ -10,16 +10,9 @@ export class StorageService {
     localStorage.setItem(key,value);
   }
 
-  getItem(key : string) : string | null
-  {
-    const value = localStorage.getItem(key);
-    if (!value)
-     {
-      console.warn(`Missing value for key: ${key}`);
-    }
-    return value;
+  getItem(key: string): string | null {
+    return localStorage.getItem(key) || null; 
   }
-
   removeItem(key : string) : void
   {
     localStorage.removeItem(key);
